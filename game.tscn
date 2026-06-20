@@ -23,7 +23,6 @@ angular_damp = 20.0
 anker = NodePath("../Player")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1015059002]
-visible = false
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1335870316]
 position = Vector2(-327, 311)
