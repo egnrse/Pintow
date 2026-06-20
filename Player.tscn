@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://cnpt3l4hkdgor" path="res://player.gd" id="1_xhfnw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]
+size = Vector2(40, 40)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_01lti"]
+radius = 17.0
+height = 38.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1342687626]
 collision_layer = 6
@@ -26,3 +31,28 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 1, 1)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=1724029088]
+current = true
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=698485722]
+offset_left = -35.0
+offset_top = -40.0
+offset_right = 35.0
+offset_bottom = -25.0
+value = 100.0
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="HealthBar" unique_id=1063977865]
+wait_time = 3.0
+one_shot = true
+
+[node name="HurtArea" type="Area2D" parent="." unique_id=1318805703]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea" unique_id=887958220]
+shape = SubResource("CapsuleShape2D_01lti")
+
+[connection signal="timeout" from="HealthBar/Timer" to="." method="_on_timer_timeout"]

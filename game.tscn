@@ -3,12 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://3fp543f3angf" path="res://Player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://dbhgx2smnvpbk" path="res://game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://b8pne1op3m2sy" path="res://Rotateing.tscn" id="2_e2o6t"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2si4"]
-size = Vector2(40, 40)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]
-size = Vector2(39, 248)
+[ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://UI.gd" id="4_fc0e3"]
 
 [sub_resource type="Curve2D" id="Curve2D_feb5d"]
 _data = {
@@ -16,8 +11,31 @@ _data = {
 }
 point_count = 5
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2si4"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]
+size = Vector2(39, 248)
+
 [node name="Game" type="Node2D" unique_id=1066861215]
 script = ExtResource("1_feb5d")
+
+[node name="Enemies" type="Node2D" parent="." unique_id=1876228398]
+unique_name_in_owner = true
+
+[node name="enemySpawnTimer" type="Timer" parent="Enemies" unique_id=1273448567]
+unique_name_in_owner = true
+wait_time = 3.0
+
+[node name="SpawnLine" type="Path2D" parent="Enemies" unique_id=726953029]
+position = Vector2(68.095795, 54.69876)
+scale = Vector2(1.0541492, 1.0643134)
+curve = SubResource("Curve2D_feb5d")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Enemies/SpawnLine" unique_id=1338664122]
+unique_name_in_owner = true
+position = Vector2(1403.6473, -875.4093)
+rotation = 1.5615739
 
 [node name="Player" parent="." unique_id=1342687626 instance=ExtResource("1_80nbo")]
 platform_on_leave = 2
@@ -28,7 +46,83 @@ angular_velocity = 0.34906584
 angular_damp = 20.0
 anker = NodePath("../Player")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1015059002]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1015059002]
+process_mode = 3
+script = ExtResource("4_fc0e3")
+
+[node name="GameOver" type="Control" parent="UI" unique_id=1238133911]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/GameOver" unique_id=1120344625]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29803923)
+
+[node name="Label" type="Label" parent="UI/GameOver" unique_id=1585429469]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -48.0
+offset_right = 190.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "Game Over"
+
+[node name="RestartDelay" type="Timer" parent="UI/GameOver" unique_id=1308419212]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="PauseMenu" type="Control" parent="UI" unique_id=33252457]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/PauseMenu" unique_id=1996700346]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29803923)
+
+[node name="Label2" type="Label" parent="UI/PauseMenu" unique_id=1951034065]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -139.5
+offset_top = -48.0
+offset_right = 139.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "Paused"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1781400831]
 zoom = Vector2(0.5, 0.5)
@@ -39,7 +133,7 @@ zoom = Vector2(0.5, 0.5)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Level/TestCollisions" unique_id=1335870316]
 position = Vector2(-327, 311)
-collision_layer = 10
+collision_layer = 26
 collision_mask = 26
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/TestCollisions/StaticBody2D" unique_id=511222163]
@@ -66,21 +160,6 @@ offset_bottom = 249.0
 
 [node name="Node2D" type="Node2D" parent="Level" unique_id=34913611]
 
-[node name="Enemies" type="Node2D" parent="." unique_id=1876228398]
-unique_name_in_owner = true
-
-[node name="SpawnLine" type="Path2D" parent="." unique_id=726953029]
-position = Vector2(68.095795, 54.69876)
-scale = Vector2(1.0541492, 1.0643134)
-curve = SubResource("Curve2D_feb5d")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="SpawnLine" unique_id=1338664122]
-unique_name_in_owner = true
-position = Vector2(1403.6473, -875.4093)
-rotation = 1.5615739
-
-[node name="enemySpawnTimer" type="Timer" parent="." unique_id=1273448567]
-unique_name_in_owner = true
-wait_time = 3.0
-
-[connection signal="timeout" from="enemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
+[connection signal="timeout" from="Enemies/enemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
+[connection signal="playerDeath" from="Player" to="." method="_on_player_player_death"]
+[connection signal="timeout" from="UI/GameOver/RestartDelay" to="." method="_on_restart_delay_timeout"]
