@@ -1,5 +1,8 @@
 extends "res://enemies/_EnemyClass.gd"
 
+@onready var Player = get_node("/root/Game/Player")
+#@onready var Game = get_node("/root/Game/")
+
 func _physics_process(delta: float) -> void:
 	move(delta)
 	
