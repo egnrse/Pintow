@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://exl2r3ctplyj"]
+
+[ext_resource type="PackedScene" uid="uid://3fp543f3angf" path="res://Player.tscn" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://dbhgx2smnvpbk" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="PackedScene" uid="uid://b8pne1op3m2sy" path="res://Rotateing.tscn" id="2_e2o6t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2si4"]
+size = Vector2(40, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]
+size = Vector2(39, 248)
+
+[node name="Game" type="Node2D" unique_id=1066861215]
+script = ExtResource("1_feb5d")
+
+[node name="Player" parent="." unique_id=1342687626 instance=ExtResource("1_80nbo")]
+platform_on_leave = 2
+
+[node name="Rotateing" parent="." unique_id=993906565 node_paths=PackedStringArray("anker") instance=ExtResource("2_e2o6t")]
+linear_damp = 1.5
+angular_velocity = 0.34906584
+angular_damp = 20.0
+anker = NodePath("../Player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1015059002]
+visible = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1335870316]
+position = Vector2(-327, 311)
+collision_layer = 10
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=511222163]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_o2si4")
+
+[node name="TestRect" type="ColorRect" parent="StaticBody2D" unique_id=612328068]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=834249014]
+position = Vector2(-326, 375)
+collision_layer = 10
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1013950006]
+position = Vector2(19.5, 124)
+shape = SubResource("RectangleShape2D_01lti")
+
+[node name="TestRect" type="ColorRect" parent="StaticBody2D2" unique_id=1951146451]
+offset_right = 39.0
+offset_bottom = 249.0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1781400831]
+zoom = Vector2(0.5, 0.5)
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="." unique_id=1845683973]
+node_a = NodePath("../Player")
+bias = 0.9
+length = 1.0
+rest_length = 63.0
+stiffness = 24.3
+damping = 0.05

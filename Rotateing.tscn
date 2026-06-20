@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://b8pne1op3m2sy"]
+
+[ext_resource type="Script" uid="uid://p6byttyd8fas" path="res://Rotateing.gd" id="1_o2si4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhfnw"]
+radius = 10.049875
+
+[node name="Rotateing" type="RigidBody2D" unique_id=993906565]
+collision_layer = 8
+collision_mask = 8
+mass = 0.15
+gravity_scale = 0.0
+continuous_cd = 1
+linear_damp = 0.8
+script = ExtResource("1_o2si4")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1520944482]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1908345422]
+position = Vector2(10, 10)
+shape = SubResource("CircleShape2D_xhfnw")
