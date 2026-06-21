@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://dbhgx2smnvpbk" path="res://game.gd" id="1_feb5d"]
 [ext_resource type="PackedScene" uid="uid://b8pne1op3m2sy" path="res://Rotateing.tscn" id="2_e2o6t"]
 [ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://UI.gd" id="4_fc0e3"]
+[ext_resource type="AudioStream" uid="uid://difnf13gi4rmh" path="res://Assets/Music/SpinToWin_MusicV2_Loop.mp3" id="5_7jktm"]
+[ext_resource type="Theme" uid="uid://d3if7f4ih42v2" path="res://Assets/labelTheme.tres" id="5_eow3j"]
+[ext_resource type="AudioStream" uid="uid://dntv5fqx3iiu7" path="res://Assets/Music/SpinToWin_MusicV2_Intro.wav" id="5_ryrav"]
 
 [sub_resource type="Curve2D" id="Curve2D_feb5d"]
 _data = {
@@ -54,6 +57,27 @@ anker = NodePath("../Player")
 process_mode = 3
 script = ExtResource("4_fc0e3")
 
+[node name="GameUI" type="Control" parent="UI" unique_id=509788404]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/GameUI" unique_id=240286680]
+layout_mode = 0
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="UI/GameUI/HBoxContainer" unique_id=380366781]
+layout_mode = 2
+theme = ExtResource("5_eow3j")
+text = "Score: "
+
+[node name="Score" type="Label" parent="UI/GameUI/HBoxContainer" unique_id=1319901375]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("5_eow3j")
+text = "_err"
+
 [node name="GameOver" type="Control" parent="UI" unique_id=1238133911]
 unique_name_in_owner = true
 visible = false
@@ -102,7 +126,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Score: "
 
-[node name="Score" type="Label" parent="UI/GameOver/VBoxContainer/HBoxContainer" unique_id=508138361]
+[node name="DeathScore" type="Label" parent="UI/GameOver/VBoxContainer/HBoxContainer" unique_id=508138361]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
@@ -147,6 +171,61 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 70
 text = "Paused"
 
+[node name="Settings_PanelContainer" type="PanelContainer" parent="UI" unique_id=480129997]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Settings_PanelContainer" unique_id=82853939]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=1791613726]
+visible = false
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Music_HBoxContainer" type="HBoxContainer" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=513758592]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer" unique_id=1747094028]
+layout_mode = 2
+text = " Music "
+vertical_alignment = 1
+
+[node name="Music_HSlider" type="HSlider" parent="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer" unique_id=1431900254]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFX_HBoxContainer2" type="HBoxContainer" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=981494972]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2" unique_id=1978493563]
+layout_mode = 2
+text = " SFX     "
+vertical_alignment = 1
+
+[node name="SFX_HSlider" type="HSlider" parent="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2" unique_id=1771059721]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1781400831]
 zoom = Vector2(0.78, 0.78)
 
@@ -183,7 +262,27 @@ offset_bottom = 249.0
 
 [node name="Node2D" type="Node2D" parent="Level" unique_id=34913611]
 
+[node name="MusicIntro" type="AudioStreamPlayer2D" parent="." unique_id=131293184]
+stream = ExtResource("5_ryrav")
+volume_db = -15.0
+autoplay = true
+max_distance = 5000.0
+attenuation = 1.8785888e-05
+panning_strength = 0.0
+bus = &"Music"
+
+[node name="MusicLoop" type="AudioStreamPlayer2D" parent="." unique_id=2012576148]
+stream = ExtResource("5_7jktm")
+volume_db = -15.0
+max_distance = 5000.0
+attenuation = 1e-05
+panning_strength = 0.0
+bus = &"Music"
+
 [connection signal="timeout" from="Enemies/enemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
 [connection signal="timeout" from="Enemies/spawnTimeTimer" to="." method="_on_spawn_time_timer_timeout"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_player_death"]
 [connection signal="timeout" from="UI/GameOver/RestartDelay" to="." method="_on_restart_delay_timeout"]
+[connection signal="drag_ended" from="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer/Music_HSlider" to="." method="_on_music_hslider_drag_ended"]
+[connection signal="drag_ended" from="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2/SFX_HSlider" to="." method="_on_sfx_hslider_drag_ended"]
+[connection signal="finished" from="MusicIntro" to="." method="_on_music_intro_finished"]

@@ -6,15 +6,28 @@ extends Node2D
 # game flow
 var startable = true
 var score = 0			## increase score on enemy death
+@onready var scoreUI := %Score 
 
 # enemies
 @onready var spawnTimer := %enemySpawnTimer
 @onready var enemies := $Enemies
 
+# audio
+@onready var musicSlider := %Music_HSlider
+@onready var sfxSlider := %SFX_HSlider
+@onready var musicAudioBus := AudioServer.get_bus_index("Music")
+@onready var sfxAudioBus := AudioServer.get_bus_index("SFX")
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# prepare
 	score = 0
+	scoreUI.text = str(score)
+	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
+	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	startable = false
 	# enemy spawns
 	spawnTimer.start()
@@ -46,6 +59,7 @@ func _on_enemy_death(entity, _position) -> void:
 	else:
 		push_warning("_on_enemy_death: entity has no 'score' or 'max_health'")
 		score += 1
+	scoreUI.text = str(score)
 
 ## called by enemySpawnTimer
 func _on_enemy_spawn_timer_timeout() -> void:
@@ -65,10 +79,21 @@ func _on_spawn_time_timer_timeout() -> void:
 	#print(spawnTimer.get_wait_time())
 
 func _on_player_player_death() -> void:
-	%Score.text = str(score)
+	%DeathScore.text = str(score)
 	%GameOver.visible = true
+	%Settings_PanelContainer.visible = true
 	get_tree().paused = true
 	%RestartDelay.start()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _on_restart_delay_timeout() -> void:
 	startable = true
+
+# Music
+func _on_music_intro_finished() -> void:
+	$MusicLoop.playing = true
+
+func _on_music_hslider_drag_ended(_value_changed: bool) -> void:
+	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
+func _on_sfx_hslider_drag_ended(_value_changed: bool) -> void:
+	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)

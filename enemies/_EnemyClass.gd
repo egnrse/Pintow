@@ -20,9 +20,21 @@ var alive := true					## if [member self] is currently alive
 var justDamaged := false			## [member self] can only take damage if false (is reset by [member iTimer])
 var iTimer := Timer.new()			## invulnerability timer, gets started after taking damage
 
+# audio
+var audioHurt := AudioStreamPlayer2D.new()	## the audio player
+var audioHurtStream := AudioStreamWAV.load_from_file("res://Assets/Enemy_HurtV3.wav")	## the audiostream obj
+var audioHurtVolume := -5		## volume in db
+var audioHurtPitchRange := 0.3	## range of the pith diviation
+var audioDie := AudioStreamPlayer2D.new()	## the audio player
+var audioDieStream := AudioStreamWAV.load_from_file("res://Assets/Enemy_HurtV2.wav")	## the audiostream obj
+var audioDieVolume := -10		## volume in db
+var audioDiePitchRange := 0.3	## range of the pith diviation
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.init()
+	self.initAudio()
 
 ## init some basic things
 func init() -> void:
@@ -36,11 +48,26 @@ func init() -> void:
 	iTimer.one_shot = true
 	iTimer.timeout.connect(_on_iTimer_timeout)
 
+## init audio stuff
+func initAudio() -> void:
+	# prep audio
+	add_child(audioHurt)
+	audioHurt.bus = &"SFX_enemy"
+	audioHurt.stream = audioHurtStream
+	audioHurt.volume_db = audioHurtVolume
+	add_child(audioDie)
+	audioDie.bus = &"SFX_enemy"
+	audioDie.stream = audioDieStream
+	audioDie.volume_db = audioDieVolume
+
 ## call to damage [member self] (decreases [member health])
 func damage(amount: int = 1) -> void:
 	# wait for the damage pause to run out
-	if justDamaged:
+	if self.justDamaged:
 		#print("justDamaged")
+		return
+	elif not self.alive:
+		# only take damage if self is alive
 		return
 	else:
 		justDamaged = true # set a new damage pause
@@ -50,14 +77,26 @@ func damage(amount: int = 1) -> void:
 	self.health -=amount
 	damaged.emit(self, amount)
 	if healthBar: healthBar.update()
-	
+		
 	if health <= 0:
-		self.die()
+		self.die() 
+	else:
+		# only play hurt if not dying
+		audioHurt.pitch_scale = randf_range(1-audioHurtPitchRange, 1+audioHurtPitchRange)
+		audioHurt.play()
 
 ## called when [member health] <= 0
 func die() -> void:
-	death.emit(self, self.global_position)
+	if not alive:
+		push_warning("die(): called but already dead: ", self)
+		return
 	alive = false
+	self.visible = false
+	death.emit(self, self.global_position)
+	# play audio (and wait for it to finish)
+	audioDie.pitch_scale = randf_range(1-audioDiePitchRange, 1+audioDiePitchRange)
+	audioDie.play()
+	await audioDie.finished
 	queue_free()
 
 ## called when [member iTimer] runs our

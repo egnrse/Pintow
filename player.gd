@@ -9,7 +9,6 @@ var health := max_health		## current health
 @onready var healthBar = $HealthBar
 
 func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	health = max_health
 	#healthBar.max_value = max_health
 	#healthBar.value = health
@@ -24,7 +23,12 @@ func _physics_process(delta: float) -> void:
 	# get damaged by enemies
 	var enemies = %HurtArea.get_overlapping_bodies()
 	if enemies.size() > 0:
-		damage(DAMAGE_RATE * enemies.size() * delta)
+		var count = 0
+		# only count alive enemies
+		for e in enemies:
+			if 'alive' in e and e.alive:
+				count += 1
+		damage(DAMAGE_RATE * count * delta)
 
 ## call to damage [member self] (decreases [member health])
 func damage(amount: float = 1) -> void:
@@ -32,4 +36,5 @@ func damage(amount: float = 1) -> void:
 	healthBar.update()
 	
 	if health <= 0:
+		$DeathAudio.play()
 		playerDeath.emit()

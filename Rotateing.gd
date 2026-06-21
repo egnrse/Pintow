@@ -75,6 +75,13 @@ func _physics_process(_delta: float) -> void:
 	for collision in cast.get_collision_count():
 		collide(cast.get_collider(collision))
 	pre_pos = global_position
+	
+	# audio
+	var audio := $AudioStreamPlayer2D
+	var pitch: float = speed / 25000.0 + 0.6
+	var volume: float = min(speed / 10000.0, 1)**2 * 0.3
+	audio.pitch_scale = pitch
+	audio.volume_linear = volume
 
 func update_stretch(stretch:float) -> void:
 	for obj in strechObjs:
