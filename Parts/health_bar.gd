@@ -5,6 +5,8 @@ extends ProgressBar
 @export var barColor := Color("777")	## the color of the healthbar
 @export var autohideTime := 5.	## after how many seconds to hide the healthbar again
 
+var animTween: Tween
+
 func _ready() -> void:
 	var sb = StyleBoxFlat.new()
 	add_theme_stylebox_override("fill", sb)
@@ -16,9 +18,18 @@ func _ready() -> void:
 
 ## call this update and to show the bar
 func update() -> void:
-	self.value = parent.health
+	#self.value = parent.health
+	anim_update()
 	self.visible = true
 	$Timer.start()
+
+func anim_update(speed:float=0.08) -> void:
+	if animTween: animTween.kill()
+	animTween = create_tween()
+	animTween.set_trans(Tween.TRANS_EXPO)
+	animTween.set_ease(Tween.EASE_OUT)
+	animTween.tween_property(self, "value", parent.health, speed)
+	await animTween.finished
 
 ## hide the healthbar if nothing changes on it
 func _on_timer_timeout() -> void:

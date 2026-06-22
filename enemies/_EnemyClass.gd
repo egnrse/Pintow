@@ -3,7 +3,9 @@
 class_name EnemyBase
 extends CharacterBody2D
 
-@onready var healthBar = get_node_or_null("HealthBar") ## the healthbar of [member self] (fails silently if none exist)
+@onready var healthBar:ProgressBar = get_node_or_null("HealthBar")	## the healthbar of [member self] (fails silently if none exist)
+@onready var look:Node2D = get_node_or_null("Look")		## look of [member self] for animations (fails silently if none exist)
+
 
 signal damaged(entity, amount:int)		## emited when [member self] is damaged
 signal death(entity,position:Vector2)	## emited when [member self] dies
@@ -30,6 +32,8 @@ var audioDieStream := preload("res://Assets/Enemy_HurtV2.wav")	## the audiostrea
 var audioDieVolume := -5		## volume in db
 var audioDiePitchRange := 0.3	## range of the pith diviation
 
+#
+var animTween:Tween	## for animations
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -84,6 +88,7 @@ func damage(amount: int = 1) -> void:
 		# only play hurt if not dying
 		audioHurt.pitch_scale = randf_range(1-audioHurtPitchRange, 1+audioHurtPitchRange)
 		audioHurt.play()
+		anim_damage(amount)
 
 ## called when [member health] <= 0
 func die() -> void:
@@ -91,13 +96,40 @@ func die() -> void:
 		push_warning("die(): called but already dead: ", self)
 		return
 	alive = false
-	self.visible = false
+	#self.visible = false	# deprecated, use anim_die
 	death.emit(self, self.global_position)
 	# play audio (and wait for it to finish)
 	audioDie.pitch_scale = randf_range(1-audioDiePitchRange, 1+audioDiePitchRange)
 	audioDie.play()
-	await audioDie.finished
+	await anim_die()
+	#await audioDie.finished
+	
 	queue_free()
+
+#region ANIMATIONS
+func anim_damage(amount: int = 1) -> void:
+	if not look: return
+	if animTween: animTween.kill()
+	animTween = create_tween()
+	animTween.set_trans(Tween.TRANS_EXPO)
+	animTween.set_ease(Tween.EASE_OUT)
+	var o := look.scale
+	var val := o - Vector2(min(amount/13., 0.3), min(amount/13., 0.3))
+	animTween.tween_property(look, "scale", val, 0.08)
+	animTween.tween_property(look, "scale", o, 0.03)
+	await animTween.finished
+func anim_die() -> void:
+	if not look: return
+	if animTween: animTween.kill()
+	animTween = create_tween()
+	animTween.set_trans(Tween.TRANS_SINE)
+	animTween.set_ease(Tween.EASE_OUT)
+	var val := look.scale + Vector2(0.1,0.1)
+	animTween.tween_property(look, "scale", val, 0.25)
+	animTween.set_parallel(true)
+	animTween.tween_property(self, "modulate:a", 0.0, 0.25)
+	await animTween.finished
+#endregion ANIMATIONS
 
 ## called when [member iTimer] runs our
 func _on_iTimer_timeout() -> void:

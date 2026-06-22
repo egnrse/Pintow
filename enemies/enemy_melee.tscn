@@ -17,17 +17,19 @@ speed = 150
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1083486353]
 shape = SubResource("RectangleShape2D_01lti")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1260839371]
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-color = Color(0.27058825, 0, 0, 1)
-
 [node name="HealthBar" parent="." unique_id=568718901 node_paths=PackedStringArray("parent") instance=ExtResource("2_6vgja")]
 parent = NodePath("..")
 barColor = Color(0.6666667, 0.11372549, 0.11764706, 0.74509805)
 autohideTime = 4.0
+
+[node name="Look" type="Node2D" parent="." unique_id=186874099]
+
+[node name="ColorRect" type="ColorRect" parent="Look" unique_id=1260839371]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.29833463, 1.1160317e-06, 5.5350364e-07, 1)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=788818481]
 autoplay = true

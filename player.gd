@@ -9,10 +9,7 @@ var health := max_health		## current health
 @onready var healthBar = $HealthBar
 
 func _ready():
-	health = max_health
-	#healthBar.max_value = max_health
-	#healthBar.value = health
-	healthBar.update()
+	reset()
 
 func _physics_process(delta: float) -> void:
 	# follow mouse
@@ -28,10 +25,13 @@ func _physics_process(delta: float) -> void:
 		for e in enemies:
 			if 'alive' in e and e.alive:
 				count += 1
-		damage(DAMAGE_RATE * count * delta)
+		if count > 0:
+			damage(DAMAGE_RATE * count * delta)
 
 ## call to damage [member self] (decreases [member health])
 func damage(amount: float = 1) -> void:
+	if amount <= 0:
+		push_warning("player.damage(): amount <= 0, ", amount)
 	self.health -=amount
 	healthBar.update()
 	
@@ -42,3 +42,8 @@ func damage(amount: float = 1) -> void:
 		var hurtAudio = $HurtAudio
 		if not hurtAudio.playing:
 			hurtAudio.play()
+
+## reset everything
+func reset() -> void:
+	health = max_health
+	healthBar.update()

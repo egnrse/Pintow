@@ -15,7 +15,7 @@ There is a gameOver and pause screen.
 
 ## TODO
 - make pretty (art, animations?, particles?)
-- music/sfx
+- sfx
 - more ui?
 - features?
 

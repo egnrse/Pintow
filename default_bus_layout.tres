@@ -6,6 +6,7 @@ volume_db = 18.0
 
 [sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_j3pel"]
 resource_name = "Limiter"
+ceiling_db = -1.5
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
 resource_name = "Reverb"
@@ -13,6 +14,30 @@ room_size = 0.62
 damping = 1.0
 hipass = 0.4
 wet = 0.04
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_g28q7"]
+resource_name = "Reverb"
+room_size = 0.93
+hipass = 0.2
+dry = 0.65
+wet = 0.4
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
+resource_name = "LowPassFilter"
+cutoff_hz = 1970.0
+resonance = 0.48
+db = 1
+
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_j3pel"]
+resource_name = "HighPassFilter"
+cutoff_hz = 20.0
+resonance = 0.43
+
+[sub_resource type="AudioEffectBandPassFilter" id="AudioEffectBandPassFilter_j3pel"]
+resource_name = "BandPassFilter"
+cutoff_hz = 927.0
+resonance = 0.76
+db = 1
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectAmplify_j3pel")
@@ -39,3 +64,11 @@ bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = -0.15938377
 bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectReverb_g28q7")
+bus/3/effect/0/enabled = false
+bus/3/effect/1/effect = SubResource("AudioEffectLowPassFilter_j3pel")
+bus/3/effect/1/enabled = true
+bus/3/effect/2/effect = SubResource("AudioEffectHighPassFilter_j3pel")
+bus/3/effect/2/enabled = true
+bus/3/effect/3/effect = SubResource("AudioEffectBandPassFilter_j3pel")
+bus/3/effect/3/enabled = false

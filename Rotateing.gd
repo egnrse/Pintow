@@ -93,3 +93,10 @@ func collide(body: Node2D) -> void:
 	if body.has_method("damage"):
 		# damage enemies
 		body.damage()
+
+## reset everything
+func reset() -> void:
+	pre_angle = 0
+	pre_stretch = 1
+	pre_pos = self.global_position
+	update_stretch(1)

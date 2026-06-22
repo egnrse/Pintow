@@ -7,22 +7,58 @@
 [ext_resource type="Theme" uid="uid://d3if7f4ih42v2" path="res://Assets/labelTheme.tres" id="5_eow3j"]
 [ext_resource type="AudioStream" uid="uid://cul5kyfur3ex7" path="res://Assets/Music/SpinToWin_MusicV2.mp3" id="6_j5wjh"]
 
-[sub_resource type="Curve2D" id="Curve2D_feb5d"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 1403.6473, -875.4093, 0, 0, 0, 0, 1419.0632, 796.1011, 0, 0, 0, 0, -1532.1023, 778.2144, 0, 0, 0, 0, -1534.0293, -894.1903, 0, 0, 0, 0, 1398.83, -881.6697)
-}
-point_count = 5
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o2si4"]
 size = Vector2(40, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]
 size = Vector2(39, 248)
 
+[sub_resource type="Curve2D" id="Curve2D_feb5d"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1403.6473, -875.4093, 0, 0, 0, 0, 1419.0632, 796.1011, 0, 0, 0, 0, -1532.1023, 778.2144, 0, 0, 0, 0, -1534.0293, -894.1903, 0, 0, 0, 0, 1398.83, -881.6697)
+}
+point_count = 5
+
 [node name="Game" type="Node2D" unique_id=1066861215]
 script = ExtResource("1_feb5d")
 
+[node name="Level" type="Node2D" parent="." unique_id=1336884311]
+
+[node name="TestCollisions" type="Node2D" parent="Level" unique_id=116089207]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/TestCollisions" unique_id=1335870316]
+position = Vector2(-350, 300)
+collision_layer = 26
+collision_mask = 26
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/TestCollisions/StaticBody2D" unique_id=511222163]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_o2si4")
+
+[node name="TestRect" type="ColorRect" parent="Level/TestCollisions/StaticBody2D" unique_id=612328068]
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Level/TestCollisions" unique_id=834249014]
+position = Vector2(-350, 390)
+collision_layer = 26
+collision_mask = 26
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/TestCollisions/StaticBody2D2" unique_id=1013950006]
+position = Vector2(19.5, 124)
+shape = SubResource("RectangleShape2D_01lti")
+
+[node name="TestRect" type="ColorRect" parent="Level/TestCollisions/StaticBody2D2" unique_id=1951146451]
+offset_right = 39.0
+offset_bottom = 249.0
+
+[node name="Node2D" type="Node2D" parent="Level" unique_id=34913611]
+
 [node name="Enemies" type="Node2D" parent="." unique_id=1876228398]
+unique_name_in_owner = true
+
+[node name="EnemyContainer" type="Node2D" parent="Enemies" unique_id=796792751]
 unique_name_in_owner = true
 
 [node name="enemySpawnTimer" type="Timer" parent="Enemies" unique_id=1273448567]
@@ -43,14 +79,14 @@ unique_name_in_owner = true
 position = Vector2(1403.6473, -875.4093)
 rotation = 1.5615739
 
-[node name="Player" parent="." unique_id=1342687626 instance=ExtResource("1_80nbo")]
-platform_on_leave = 2
-
 [node name="Rotateing" parent="." unique_id=993906565 node_paths=PackedStringArray("anker") instance=ExtResource("2_e2o6t")]
 linear_damp = 1.5
 angular_velocity = 0.34906584
 angular_damp = 20.0
 anker = NodePath("../Player")
+
+[node name="Player" parent="." unique_id=1342687626 instance=ExtResource("1_80nbo")]
+platform_on_leave = 2
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1015059002]
 process_mode = 3
@@ -76,6 +112,41 @@ unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("5_eow3j")
 text = "_err"
+
+[node name="PauseMenu" type="Control" parent="UI" unique_id=33252457]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/PauseMenu" unique_id=1996700346]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29803923)
+
+[node name="Label2" type="Label" parent="UI/PauseMenu" unique_id=1951034065]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -139.5
+offset_top = -48.0
+offset_right = 139.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 70
+text = "Paused"
 
 [node name="GameOver" type="Control" parent="UI" unique_id=1238133911]
 unique_name_in_owner = true
@@ -133,42 +204,8 @@ text = "_err"
 
 [node name="RestartDelay" type="Timer" parent="UI/GameOver" unique_id=1308419212]
 unique_name_in_owner = true
+wait_time = 0.5
 one_shot = true
-
-[node name="PauseMenu" type="Control" parent="UI" unique_id=33252457]
-unique_name_in_owner = true
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="UI/PauseMenu" unique_id=1996700346]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.29803923)
-
-[node name="Label2" type="Label" parent="UI/PauseMenu" unique_id=1951034065]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -139.5
-offset_top = -48.0
-offset_right = 139.5
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 70
-text = "Paused"
 
 [node name="Settings_PanelContainer" type="PanelContainer" parent="UI" unique_id=480129997]
 unique_name_in_owner = true
@@ -228,40 +265,8 @@ value = 1.0
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1781400831]
 zoom = Vector2(0.78, 0.78)
 
-[node name="Level" type="Node2D" parent="." unique_id=1336884311]
-
-[node name="TestCollisions" type="Node2D" parent="Level" unique_id=116089207]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Level/TestCollisions" unique_id=1335870316]
-position = Vector2(-327, 311)
-collision_layer = 26
-collision_mask = 26
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/TestCollisions/StaticBody2D" unique_id=511222163]
-position = Vector2(20, 20)
-shape = SubResource("RectangleShape2D_o2si4")
-
-[node name="TestRect" type="ColorRect" parent="Level/TestCollisions/StaticBody2D" unique_id=612328068]
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="Level/TestCollisions" unique_id=834249014]
-position = Vector2(-326, 375)
-collision_layer = 26
-collision_mask = 26
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/TestCollisions/StaticBody2D2" unique_id=1013950006]
-position = Vector2(19.5, 124)
-shape = SubResource("RectangleShape2D_01lti")
-
-[node name="TestRect" type="ColorRect" parent="Level/TestCollisions/StaticBody2D2" unique_id=1951146451]
-offset_right = 39.0
-offset_bottom = 249.0
-
-[node name="Node2D" type="Node2D" parent="Level" unique_id=34913611]
-
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1279408072]
+process_mode = 3
 stream = ExtResource("6_j5wjh")
 volume_db = -17.5
 autoplay = true
