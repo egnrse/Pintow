@@ -22,12 +22,12 @@ var iTimer := Timer.new()			## invulnerability timer, gets started after taking 
 
 # audio
 var audioHurt := AudioStreamPlayer2D.new()	## the audio player
-var audioHurtStream := AudioStreamWAV.load_from_file("res://Assets/Enemy_HurtV3.wav")	## the audiostream obj
-var audioHurtVolume := -5		## volume in db
+var audioHurtStream := preload("res://Assets/Enemy_HurtV3.wav")	## the audiostream obj
+var audioHurtVolume := 0		## volume in db
 var audioHurtPitchRange := 0.3	## range of the pith diviation
 var audioDie := AudioStreamPlayer2D.new()	## the audio player
-var audioDieStream := AudioStreamWAV.load_from_file("res://Assets/Enemy_HurtV2.wav")	## the audiostream obj
-var audioDieVolume := -10		## volume in db
+var audioDieStream := preload("res://Assets/Enemy_HurtV2.wav")	## the audiostream obj
+var audioDieVolume := -5		## volume in db
 var audioDiePitchRange := 0.3	## range of the pith diviation
 
 

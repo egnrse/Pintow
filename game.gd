@@ -18,7 +18,6 @@ var score = 0			## increase score on enemy death
 @onready var musicAudioBus := AudioServer.get_bus_index("Music")
 @onready var sfxAudioBus := AudioServer.get_bus_index("SFX")
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# prepare
@@ -36,6 +35,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	#print("AudioPeak: ", max(AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0), AudioServer.get_bus_peak_volume_right_db(AudioServer.get_bus_index("Master"), 0)))
 	pass
 
 func reset_scene():

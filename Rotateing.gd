@@ -79,7 +79,7 @@ func _physics_process(_delta: float) -> void:
 	# audio
 	var audio := $AudioStreamPlayer2D
 	var pitch: float = speed / 25000.0 + 0.6
-	var volume: float = min(speed / 10000.0, 1)**2 * 0.3
+	var volume: float = min(speed / 10000.0, 1)**2 * 0.36
 	audio.pitch_scale = pitch
 	audio.volume_linear = volume
 
