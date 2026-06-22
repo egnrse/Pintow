@@ -54,6 +54,7 @@ func gameStart(force:bool = false) -> bool:
 	startable = false
 	
 	# reset
+	%enemySpawnTimer.wait_time = 4.
 	AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, false)
 	music.playing = true
 	# free all enemies in EnemyContainer
