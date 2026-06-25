@@ -2,6 +2,8 @@
 A simple retro inspired top down survival game made in [Godot](https://godotengine.org/).
 This Game was made during for [The Very Serious Juniper Dev Game Jam](https://itch.io/jam/theveryseriousjuniperdevgamejam).
 
+![Preview](./Cover.png)
+
 Play it online: [egnrse.itch.io/pintow](https://egnrse.itch.io/pintow)
 
 
