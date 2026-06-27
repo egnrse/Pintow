@@ -320,7 +320,7 @@ zoom = Vector2(0.78, 0.78)
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1279408072]
 process_mode = 3
 stream = ExtResource("6_j5wjh")
-volume_db = -17.5
+volume_db = -20.0
 autoplay = true
 bus = &"Music"
 

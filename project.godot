@@ -10,15 +10,16 @@ config_version=5
 
 [application]
 
-config/name="SpinToWin (JuniperJam)"
+config/name="Pintow"
 config/description="A simple retro inspired top down survival game.
 
 SourceCode (MIT License): https://github.com/egnrse/SpinToWin_JuniperJam"
-config/version="V0.1.X"
+config/version="0.2.3"
 run/main_scene="uid://exl2r3ctplyj"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 run/max_fps=120
-config/icon="uid://by02cpbnc11an"
+boot_splash/image="uid://sgewickolrhq"
+config/icon="uid://sgewickolrhq"
 
 [audio]
 
