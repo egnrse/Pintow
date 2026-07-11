@@ -6,21 +6,22 @@ signal did_damage(amount:int)		## emited when [member self] damages sth else
 
 @export_subgroup("Rope", "rope")
 @export var rope_length := 80.0		## when the rope starts pulling
-@export var rope_strength := 70.0	## how strong the rope pulls if streched
-@export var rope_max := 400.0		## max distance before clipping position (disable: -1)
+@export var rope_strength := 50.0	## how strong the rope pulls if streched
+@export var rope_max := 350.0		## max distance before clipping position (disable: -1)
 @export var rope_max_f := 60		## max force (when to start limiting the force applied to [member self])
+@export var rope_max_slow := 0.5	## if outside of [member rope_max]: how much of the velocity along the rope away from [member anker] to keep
+@export var rope_potents := 2.1		## increase force applied to rope with distance**potents
 
 @export_subgroup("Damage")
-@export var base_damage := 1			## the damage collisions with [member self] do to others (by calling other.damage())
-@export var crit1_damage := 2			## the damage a critical hit level1 does (see [member crit1_speed])
-@export var crit1_speed := 7000.		## how much speed is needed for a crit1 hit
-@export var crit2_damage := 3			## the damage a critical hit level2 does (see [member crit2_speed])
-@export var crit2_speed := 8000.		## how much speed is needed for a crit2 hit
+@export var base_damage := 1		## the damage collisions with [member self] do to others (by calling other.damage())
+@export var crit1_damage := 2		## the damage a critical hit level1 does (see [member crit1_speed])
+@export var crit1_speed := 7000.	## how much speed is needed for a crit1 hit
+@export var crit2_damage := 3		## the damage a critical hit level2 does (see [member crit2_speed])
+@export var crit2_speed := 8000.	## how much speed is needed for a crit2 hit
 
 @export_subgroup("more")
-@export var animate := true				## if animations should be shown
+@export var animate := true			## if animations should be shown
 
-var potents := 2.	## increase rope force with distance**potents
 
 # values for speed streching
 var pre_angle := self.rotation	## angle of [member self] in the previous tick
@@ -37,30 +38,30 @@ func _physics_process(_delta: float) -> void:
 	var deltaX = 0.016	# internet said dont use delta, so we do this now
 	var diff = anker.global_position - self.global_position
 	
-	# limit the max amount of rope length
-	if rope_max > 0 and diff.length() > rope_max:
-		#global_position = anker.global_position - diff.normalized() * rope_max	#deprecated, does not catch collisions
-		var target = anker.global_position - diff.normalized() * rope_max
-		# raycast to catch colisions when teleporting the obj
-		# (does not fully work, try shape casting?)
-		var space_state = get_world_2d().direct_space_state
-		var query = PhysicsRayQueryParameters2D.create(self.global_position, target)
-		query.exclude = [self, anker]
-		var result = space_state.intersect_ray(query)
-		if result:
-			# do nothing on collision
-			#print("Collision: ", result.position)
-			pass
-		else:
-			global_position = target
+	# limit the max amount of rope length @deprecated: moved to _integrate_forces
+	#if rope_max > 0 and diff.length() > rope_max:
+		##global_position = anker.global_position - diff.normalized() * rope_max	#deprecated, does not catch collisions
+		#var target = anker.global_position - diff.normalized() * rope_max
+		## raycast to catch colisions when teleporting the obj
+		## (does not fully work, try shape casting?)
+		#var space_state = get_world_2d().direct_space_state
+		#var query = PhysicsRayQueryParameters2D.create(self.global_position, target)
+		#query.exclude = [self, anker]
+		#var result = space_state.intersect_ray(query)
+		#if result:
+			## do nothing on collision
+			##print("Collision: ", result.position)
+			#pass
+		#else:
+			#global_position = target
 	
 	# normal rope pull
 	if diff.length() > rope_length:
-		var f = diff.normalized() * (diff.length() - rope_length)**potents * rope_strength
+		var f = diff.normalized() * (diff.length() - rope_length)**rope_potents * rope_strength
 		# limit to high forces
 		if f.length()*deltaX > diff.length()*rope_max_f:
 			#print("Limiting ", f*deltaX)
-			f = diff*rope_max_f**potents
+			f = diff*rope_max_f**rope_potents
 		self.apply_central_force(
 			f * deltaX 
 		)
@@ -109,7 +110,38 @@ func _physics_process(_delta: float) -> void:
 			speedPart.emitting = false
 	else:
 		speedPart.emitting = false
-	
+
+## called before standard force integration
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	# enforce [member rope_max]
+	if rope_max > 0:
+		var to_anchor = anker.global_position - global_position
+		var current_dist = to_anchor.length()
+		
+		if current_dist > rope_max:
+			var overshoot = current_dist - rope_max
+			var pull_direction = to_anchor.normalized()
+			# test for colisions
+			var params = PhysicsTestMotionParameters2D.new()
+			params.from = state.transform # start at current position
+			params.motion = pull_direction * overshoot # the intended pull vector
+			var result = PhysicsTestMotionResult2D.new()
+			var collided = PhysicsServer2D.body_test_motion(get_rid(), params, result)
+			if collided:
+				var wall_normal = result.get_collision_normal()
+				#var slide_motion = result.get_remainder().slide(wall_normal)	# can lead to phasing through stuff
+				state.transform.origin += result.get_travel() #+ slide_motion
+				state.linear_velocity = state.linear_velocity.slide(wall_normal)
+			else:
+				# push the body back into bounds using the physics state
+				state.transform.origin += pull_direction * overshoot
+			
+			# cancel out some velocity moving AWAY from the anchor
+			var relative_velocity = state.linear_velocity
+			var velocity_along_rope = relative_velocity.dot(pull_direction)
+			if velocity_along_rope < 0: # Moving away
+				state.linear_velocity -= pull_direction * velocity_along_rope*rope_max_slow
+
 func update_stretch(stretch:float) -> void:
 	for obj in strechObjs:
 		obj.scale.x = stretch

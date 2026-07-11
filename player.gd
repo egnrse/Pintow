@@ -7,7 +7,8 @@ signal playerDeath	## called when the player dies
 var health := max_health		## current health
 
 @export_subgroup("more")
-@export var animate := true				## if animations should be shown
+@export var animate := true		## if animations should be shown
+@export var snapSpeed := 1.5	## how many physics frames the player needs to be at the mouse position
 
 @onready var healthBar = $HealthBar
 @onready var deathNode = $Death
@@ -23,7 +24,8 @@ func _physics_process(delta: float) -> void:
 	# follow mouse
 	var mouse := get_global_mouse_position()
 	var motion := mouse - global_position
-	move_and_collide(motion)
+	velocity = motion / (delta*snapSpeed)
+	move_and_slide()
 	
 	# get damaged by enemies
 	var enemies = %HurtArea.get_overlapping_bodies()
