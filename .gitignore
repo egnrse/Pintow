@@ -3,4 +3,4 @@
 /android/
 
 # ignore build artefacts
-build/
+Build/

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bnuxd4xwryo0a"]
 
-[ext_resource type="Script" uid="uid://ks0lg6t1daxa" path="res://enemies/enemy_melee.gd" id="1_tmi4g"]
+[ext_resource type="Script" uid="uid://ks0lg6t1daxa" path="res://Enemies/enemy_melee.gd" id="1_tmi4g"]
 [ext_resource type="PackedScene" uid="uid://nueuwd3wfkvd" path="res://Parts/health_bar.tscn" id="2_6vgja"]
 [ext_resource type="Texture2D" uid="uid://ckcrbxrcyfepx" path="res://Assets/sprites/loose sprites/part-enemy_ufo1.png" id="3_1vgek"]
 [ext_resource type="Texture2D" uid="uid://c0gtaq4o7oqko" path="res://Assets/sprites/loose sprites/part-enemy_ufo2.png" id="4_0ucfp"]
@@ -40,7 +40,7 @@
 size = Vector2(40, 40)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8tkyq"]
-radius = 22.0
+radius = 23.0
 height = 55.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_01lti"]
@@ -176,7 +176,6 @@ shape = SubResource("RectangleShape2D_01lti")
 disabled = true
 
 [node name="CollisionShape2D_Sprite" type="CollisionShape2D" parent="." unique_id=1906472407]
-position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_8tkyq")
 
 [node name="HealthBar" parent="." unique_id=568718901 node_paths=PackedStringArray("parent") instance=ExtResource("2_6vgja")]
@@ -200,14 +199,8 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_01lti")
 autoplay = "default"
 
-[node name="AnimatedSprite2D_line" type="AnimatedSprite2D" parent="Look" unique_id=319727315]
-visible = false
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_01lti")
-autoplay = "default"
-
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=788818481]
-autoplay = true
+visible = false
 attenuation = 5.42776
 panning_strength = 1.6
 bus = &"SFX_enemy"

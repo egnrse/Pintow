@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b36fmafqrxor6"]
 
-[ext_resource type="Script" uid="uid://ks0lg6t1daxa" path="res://enemies/enemy_melee.gd" id="1_tmi4g"]
+[ext_resource type="Script" uid="uid://ks0lg6t1daxa" path="res://Enemies/enemy_melee.gd" id="1_tmi4g"]
 [ext_resource type="PackedScene" uid="uid://nueuwd3wfkvd" path="res://Parts/health_bar.tscn" id="2_6vgja"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01lti"]

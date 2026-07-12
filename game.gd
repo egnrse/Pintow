@@ -1,41 +1,50 @@
+## main game script
 extends Node2D
 
+# game flow
+var startable := true	## if the game can be started
+var running := false		## if the game is running right now
+var score := 0			## increase score on enemy death
+
+# general nodes
 @onready var rot := get_node("Rotateing")
 @onready var player := get_node("Player")
-
-# game flow
-var startable = true
-var running = false
-var score = 0			## increase score on enemy death
-@onready var scoreUI := %Score 
+@onready var camera := $Camera2D
+@onready var scoreUI := %Score
 
 # enemies
 @onready var spawnTimer := %enemySpawnTimer
-@onready var enemies := %Enemies
 @onready var enemyContainer := %EnemyContainer
 
 # audio
-var musicReverbIdx = 0
-var musicLPIdx = 1
-var musicHPIdx = 2
-@onready var musicSlider := %Music_HSlider
+var musicReverbIdx := 0	## effect index in the music bus
+var musicLPIdx := 1
+var musicHPIdx := 2
+@onready var music := $Music	## game music AudioStreamPlayer
+@onready var musicSlider := %Music_HSlider	## slider controlling the volume of the music bus
 @onready var sfxSlider := %SFX_HSlider
-@onready var musicAudioBus := AudioServer.get_bus_index("Music")
+@onready var musicAudioBus := AudioServer.get_bus_index("Music")	## index of the music bus itself
 @onready var sfxAudioBus := AudioServer.get_bus_index("SFX")
-@onready var music := $Music
-@onready var musicReverb = AudioServer.get_bus_effect(musicAudioBus, musicReverbIdx) as AudioEffectReverb
-@onready var musicLP = AudioServer.get_bus_effect(musicAudioBus, musicLPIdx) as AudioEffectFilter
-@onready var musicHP = AudioServer.get_bus_effect(musicAudioBus, musicHPIdx) as AudioEffectFilter
+@onready var musicReverb := AudioServer.get_bus_effect(musicAudioBus, musicReverbIdx) as AudioEffectReverb	## effect instance
+@onready var musicLP := AudioServer.get_bus_effect(musicAudioBus, musicLPIdx) as AudioEffectFilter
+@onready var musicHP := AudioServer.get_bus_effect(musicAudioBus, musicHPIdx) as AudioEffectFilter
 
-#
-@export var animate := true			## if animations should be shown
-var animTween: Tween
-var pauseTween: Tween
-@onready var camera = $Camera2D
+# animation
+@export var animate := true		## if animations should be shown
+var animTween: Tween			## tween obj for general animations
+var pauseTween: Tween			## tween obj for game pauses
+
+# extra
+@export_group("dev cheats", "dev_")			## some only apply on game start
+@export var dev_disableEnemySpawn := false	## disable all enemy spawns
+@export var dev_beefyPlayer := false		## give [member player] infinite health
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if dev_beefyPlayer:
+		player.max_health = INF
+	
 	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
 	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
 	
@@ -46,11 +55,12 @@ func _process(_delta: float) -> void:
 	#print("AudioPeak: ", max(AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0), AudioServer.get_bus_peak_volume_right_db(AudioServer.get_bus_index("Master"), 0)))
 	pass
 
+
 #region HELPER
-## reset and start the game (force a game start even if its in a bad state)
+## reset and start the game (force: force a game start even if its in a bad state)
 func gameStart(force:bool = false) -> bool:
 	if not startable or running:
-		push_warning("Game is not startable or running")
+		push_warning("gameStart(): Game is not startable or is already running")
 		if not force: return false
 	startable = false
 	
@@ -70,8 +80,7 @@ func gameStart(force:bool = false) -> bool:
 	
 	# prepare
 	updateAnimate()
-	score = 0
-	scoreUI.text = str(score)
+	updateScore(0)
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
 	# enemy spawns
@@ -82,6 +91,7 @@ func gameStart(force:bool = false) -> bool:
 	running = true
 	return true
 
+## called when the game ends
 func gameEnd() -> void:
 	running = false
 	AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, true)
@@ -93,7 +103,7 @@ func gameEnd() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	%RestartDelay.start()
 
-# called right before/after a pause
+## called right before/after a pause
 func pause(start:bool = true) -> void:
 	# menus
 	%PauseMenu.visible = start
@@ -118,13 +128,16 @@ func pause(start:bool = true) -> void:
 			AudioServer.set_bus_effect_enabled(musicAudioBus, musicLPIdx, false)
 		)
 
-## deprecated game restart
+## @deprecated game restart
 func reset_scene():
 	push_warning("reset_scene(): is deprecated, use gameEnd()/gameStart()")
 	get_tree().reload_current_scene()
 
-## spawn 1 enemy somewhere on the SpawnLine
-func spawn_enemy(type="res://enemies/enemy_melee.tscn") -> void:
+## spawn an enemy somewhere on the SpawnLine
+func spawn_enemy(type="res://Enemies/enemy_melee.tscn") -> void:
+	if dev_disableEnemySpawn:
+		# enemy spawn kill switch
+		return
 	var randValue := randf()
 	#print("enemy spawn: ", type, ", ", randValue)
 	var enemy = load(type).instantiate()
@@ -133,6 +146,11 @@ func spawn_enemy(type="res://enemies/enemy_melee.tscn") -> void:
 	enemy.death.connect(_on_enemy_death)
 	if 'animate' in enemy: enemy.animate = animate
 	enemyContainer.add_child(enemy)
+
+## update the score visuals
+func updateScore(newScore:int=score) -> void:
+	score = newScore
+	scoreUI.text = str(score)
 
 ## update the animate value of some children
 func updateAnimate() -> void:
@@ -145,8 +163,9 @@ func updateAnimate() -> void:
 			e.animate = animate
 #endregion HELPER
 
+
 #region SIGNALS
-##  called on all enemy deaths
+## called on enemy death
 func _on_enemy_death(entity, _position) -> void:
 	if 'score' in entity:
 		score += entity.score
@@ -178,6 +197,26 @@ func _on_player_player_death() -> void:
 	anim_death()
 	gameEnd()
 
+## force wait timer before allowing to restart
+func _on_restart_delay_timeout() -> void:
+	startable = true
+
+func _on_animate_check_box_toggled(toggled_on: bool) -> void:
+	animate = toggled_on
+	updateAnimate()
+	pass # Replace with function body.
+#endregion SIGNALS
+
+
+#region AUDIO
+func _on_music_hslider_drag_ended(_value_changed: bool) -> void:
+	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
+func _on_sfx_hslider_drag_ended(_value_changed: bool) -> void:
+	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
+#endregion AUDIO
+
+
+#region ANIMATE
 func anim_death() -> void:
 	if animTween:
 		animTween.kill()
@@ -190,20 +229,4 @@ func anim_death() -> void:
 	animTween.tween_property(camera, "zoom", val, 0.01)
 	animTween.tween_property(camera, "zoom", o, 0.1)
 	pass
-
-## force wait timer before allowing to restart
-func _on_restart_delay_timeout() -> void:
-	startable = true
-
-func _on_animate_check_box_toggled(toggled_on: bool) -> void:
-	animate = toggled_on
-	updateAnimate()
-	pass # Replace with function body.
-#endregion SIGNALS
-
-#region AUDIO
-func _on_music_hslider_drag_ended(_value_changed: bool) -> void:
-	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
-func _on_sfx_hslider_drag_ended(_value_changed: bool) -> void:
-	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
-#endregion AUDIO
+#endregion ANIMATE

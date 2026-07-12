@@ -14,7 +14,6 @@ Player can use the Rotating obj to kill them.
 There is a gameOver and pause screen.
 
 ## TODO
-- make pretty (art, animations?, particles?)
 - sfx
 - more ui?
 - features?

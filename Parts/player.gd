@@ -1,8 +1,10 @@
+## main player script 
+## (handles player movement, damage to [member self], player death, player animations, ...)
 extends CharacterBody2D
 
 signal playerDeath	## called when the player dies
 
-@export var DAMAGE_RATE := 12	## how fast to get damaged
+@export var DAMAGE_RATE := 12	## how much damage the player takes per second per enemy
 @export var max_health := 10.	## max health
 var health := max_health		## current health
 
@@ -10,12 +12,11 @@ var health := max_health		## current health
 @export var animate := true		## if animations should be shown
 @export var snapSpeed := 1.5	## how many physics frames the player needs to be at the mouse position
 
-@onready var healthBar = $HealthBar
-@onready var deathNode = $Death
-#@onready var deathPart = $Death/DeathParticles
-#@onready var deathAudio = $Death/DeathAudio
-@onready var animatedSprite = $AnimatedSprite2D_png
-@onready var animatedTimer = $AnimatedSprite2D_png/Timer
+@onready var healthBar := $HealthBar	## healthbar node
+@onready var deathNode := $Death		## death handler node
+@onready var animatedSprite := $AnimatedSprite2D_png
+@onready var animatedTimer := $AnimatedSprite2D_png/Timer
+
 
 func _ready():
 	reset()
@@ -79,6 +80,7 @@ func animateUpdate() -> void:
 			animatedSprite.play("default")
 	else:
 		animatedSprite.stop()
+
 
 ## reset animation to default
 func _on_timer_timeout() -> void:

@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://exl2r3ctplyj"]
 
-[ext_resource type="PackedScene" uid="uid://3fp543f3angf" path="res://Player.tscn" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://3fp543f3angf" path="res://Parts/player.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://dbhgx2smnvpbk" path="res://game.gd" id="1_feb5d"]
-[ext_resource type="PackedScene" uid="uid://b8pne1op3m2sy" path="res://Rotateing.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://b8pne1op3m2sy" path="res://Parts/rotateing.tscn" id="2_e2o6t"]
 [ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="2_eow3j"]
 [ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="3_j5wjh"]
-[ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://UI.gd" id="4_fc0e3"]
+[ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://Parts/UI.gd" id="4_fc0e3"]
 [ext_resource type="Theme" uid="uid://d3if7f4ih42v2" path="res://Assets/labelTheme.tres" id="5_eow3j"]
 [ext_resource type="AudioStream" uid="uid://cul5kyfur3ex7" path="res://Assets/Music/SpinToWin_MusicV2.mp3" id="6_j5wjh"]
 

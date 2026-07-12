@@ -1,3 +1,5 @@
+## handle player death animations
+## (ignore game pause)
 extends Node2D
 
 @export var animatedSprite: AnimatedSprite2D

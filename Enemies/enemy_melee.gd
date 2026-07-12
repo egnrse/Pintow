@@ -1,7 +1,8 @@
-extends "res://enemies/_EnemyClass.gd"
+## simple meele enemy
+extends "res://Enemies/_EnemyClass.gd"
 
-@onready var Player = get_node("/root/Game/Player")
-#@onready var Game = get_node("/root/Game/")
+@onready var player := get_node("/root/Game/Player")
+#@onready var game := get_node("/root/Game/")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,8 +17,9 @@ func _physics_process(delta: float) -> void:
 		move(delta)
 	else:
 		$AudioStreamPlayer2D.stop()
-	
+
+## moves [member self] to [member player] (called each physics_process)
 func move(_delta: float) -> void:
-	var direction = global_position.direction_to(self.Player.global_position)
+	var direction = global_position.direction_to(self.player.global_position)
 	velocity = direction * self.speed
 	move_and_slide()

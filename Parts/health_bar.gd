@@ -1,11 +1,15 @@
-## a healthbar for parent
+## a healthbar for its parent, call [member update()] on value changes
+## (expects [member parent.health], [member parent.max_health], optional: [member parent.animate])
 extends ProgressBar
 
-@export var parent: Node2D		## expects [member parent.health], [member parent.max_health] to exist
+@export var parent: Node2D		## the parent the healthbar is for (expects [member parent.health], [member parent.max_health] to exist)
 @export var barColor := Color("777")	## the color of the healthbar
+@export_group("more")
 @export var autohideTime := 5.	## after how many seconds to hide the healthbar again
+@export var animSpeed := 0.08	## how long the value change animation takes
 
 var animTween: Tween
+
 
 func _ready() -> void:
 	var sb = StyleBoxFlat.new()
@@ -16,7 +20,7 @@ func _ready() -> void:
 	self.max_value = parent.max_health
 	self.value = parent.health
 
-## call this update and to show the bar
+## call this to update and show the bar (automatically fetches [member parent.health])
 func update() -> void:
 	if "animate" in parent and not parent.animate: 
 		self.value = parent.health
@@ -25,7 +29,8 @@ func update() -> void:
 	self.visible = true
 	$Timer.start()
 
-func anim_update(speed:float=0.08) -> void:
+## update the healthbar with an animation for value changes (speed: speed of the animation)
+func anim_update(speed:float=animSpeed) -> void:
 	if animTween: animTween.kill()
 	animTween = create_tween()
 	animTween.set_trans(Tween.TRANS_EXPO)

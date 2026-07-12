@@ -4,8 +4,6 @@ class_name EnemyBase
 extends CharacterBody2D
 
 @onready var healthBar:ProgressBar = get_node_or_null("HealthBar")	## the healthbar of [member self] (fails silently if none exist)
-#@onready var look:Node2D = get_node_or_null("Look")		## look of  for animations (fails silently if none exist)
-
 
 signal damaged(entity, amount:int)		## emited when [member self] is damaged
 signal death(entity,position:Vector2)	## emited when [member self] dies
@@ -26,7 +24,7 @@ signal death(entity,position:Vector2)	## emited when [member self] dies
 @export_subgroup("more")
 @export var INVUL_TIME := 0.1;		## invulnerability time between damage instances (see [member iTimer])
 @export var animate := true			## if animations should be shown
-
+@export var audioBus := &"SFX_enemy"## the bus to where the audio of SFX goes to
 
 var health := max_health			## current health
 var alive := true					## if [member self] is currently alive
@@ -36,15 +34,15 @@ var iTimer := Timer.new()			## invulnerability timer, gets started after taking 
 # audio
 var audioHurt := AudioStreamPlayer2D.new()	## the audio player
 var audioHurtStream := preload("res://Assets/Enemy_HurtV3.wav")	## the audiostream obj
-var audioHurtVolume := 0		## volume in db
-var audioHurtPitchRange := 0.3	## range of the pith diviation
+var audioHurtVolume := 0			## volume in db
+var audioHurtPitchRange := 0.3		## range of the pith diviation
 var audioDie := AudioStreamPlayer2D.new()	## the audio player
 var audioDieStream := preload("res://Assets/Enemy_HurtV2.wav")	## the audiostream obj
-var audioDieVolume := -5		## volume in db
-var audioDiePitchRange := 0.3	## range of the pith diviation
+var audioDieVolume := -5			## volume in db
+var audioDiePitchRange := 0.3		## range of the pith diviation
 
 # animation
-var animTween:Tween	## for animations
+var animTween:Tween				## for animations
 @onready var animTimer: Timer	## the timer to stop hit animations
 
 # Called when the node enters the scene tree for the first time.
@@ -69,11 +67,11 @@ func init() -> void:
 func initAudio() -> void:
 	# prep audio
 	add_child(audioHurt)
-	audioHurt.bus = &"SFX_enemy"
+	audioHurt.bus = audioBus
 	audioHurt.stream = audioHurtStream
 	audioHurt.volume_db = audioHurtVolume
 	add_child(audioDie)
-	audioDie.bus = &"SFX_enemy"
+	audioDie.bus = audioBus
 	audioDie.stream = audioDieStream
 	audioDie.volume_db = audioDieVolume
 

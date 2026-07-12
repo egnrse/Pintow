@@ -13,7 +13,7 @@ config_version=5
 config/name="Pintow"
 config/description="A simple retro inspired top down survival game.
 
-SourceCode (MIT License): https://github.com/egnrse/SpinToWin_JuniperJam"
+SourceCode (MIT License): https://github.com/egnrse/Pintow"
 config/version="0.2.3"
 run/main_scene="uid://exl2r3ctplyj"
 config/features=PackedStringArray("4.7", "GL Compatibility")

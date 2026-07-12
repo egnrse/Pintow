@@ -1,8 +1,10 @@
+## UI script, which ignores pause
 extends CanvasLayer
 
 @onready var Game = get_parent()
 
-var mouseMode = null	## remeber the mouse mode
+var mouseMode = null	## remember the previous mouse mode
+
 
 func _process(_delta):
 	# (re)start game

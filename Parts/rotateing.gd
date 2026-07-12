@@ -1,3 +1,5 @@
+## script for the rotating planet
+## (handles movement, damage to enemies, animations, ...)
 extends RigidBody2D
 
 signal did_damage(amount:int)		## emited when [member self] damages sth else
@@ -32,6 +34,11 @@ var pre_stretch := 1.0			## stretch multiplier in the previous tick
 var pre_pos := self.global_position	## position of [member self] in the previous tick
 
 @onready var animatedSprite := $AnimatedSpriteContainer/AnimatedSprite2D	## the animation sprite
+
+
+func _ready():
+	if not anker:
+		push_error("Rotating: anker has not been set")
 
 func _physics_process(_delta: float) -> void:
 	# connect self to anker
@@ -141,6 +148,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 			var velocity_along_rope = relative_velocity.dot(pull_direction)
 			if velocity_along_rope < 0: # Moving away
 				state.linear_velocity -= pull_direction * velocity_along_rope*rope_max_slow
+
 
 func update_stretch(stretch:float) -> void:
 	for obj in strechObjs:
