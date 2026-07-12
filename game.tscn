@@ -6,8 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="2_eow3j"]
 [ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="3_j5wjh"]
 [ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://Parts/UI.gd" id="4_fc0e3"]
-[ext_resource type="Theme" uid="uid://d3if7f4ih42v2" path="res://Assets/labelTheme.tres" id="5_eow3j"]
 [ext_resource type="AudioStream" uid="uid://cul5kyfur3ex7" path="res://Assets/Music/SpinToWin_MusicV2.mp3" id="6_j5wjh"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="7_vef74"]
+[ext_resource type="PackedScene" uid="uid://caq7obtfk8d64" path="res://Parts/PauseScreen.tscn" id="8_hve3p"]
+[ext_resource type="PackedScene" uid="uid://dg13byed0ilsd" path="res://Parts/MainMenu.tscn" id="8_vef74"]
+[ext_resource type="PackedScene" uid="uid://cr307u4s54nqu" path="res://Parts/GameOverScreen.tscn" id="9_mfdv2"]
+[ext_resource type="PackedScene" uid="uid://mebgd2vbtgl0" path="res://Parts/SettingsMenu.tscn" id="11_iotsf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o2si4"]
 size = Vector2(40, 40)
@@ -128,191 +132,63 @@ anker = NodePath("../Player")
 platform_on_leave = 2
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1015059002]
+unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("4_fc0e3")
 
 [node name="GameUI" type="Control" parent="UI" unique_id=509788404]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScorePanel" type="PanelContainer" parent="UI/GameUI" unique_id=287336635]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 10.0
+offset_right = 270.0
+offset_bottom = 54.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/GameUI/ScorePanel" unique_id=240286680]
+layout_mode = 2
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="UI/GameUI/ScorePanel/HBoxContainer" unique_id=380366781]
+layout_mode = 2
+theme = ExtResource("7_vef74")
+theme_type_variation = &"HeaderMedium"
+text = "Score: "
+
+[node name="Score" type="Label" parent="UI/GameUI/ScorePanel/HBoxContainer" unique_id=1319901375]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_vef74")
+theme_type_variation = &"HeaderMedium"
+text = "_err"
+
+[node name="PauseScreen" parent="UI" unique_id=15389843 node_paths=PackedStringArray("Game") instance=ExtResource("8_hve3p")]
+unique_name_in_owner = true
+visible = false
+Game = NodePath("../..")
+
+[node name="GameOverScreen" parent="UI" unique_id=616256654 instance=ExtResource("9_mfdv2")]
+unique_name_in_owner = true
+visible = false
+
+[node name="Levels_TODO" type="Control" parent="UI" unique_id=257956815]
+visible = false
+layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/GameUI" unique_id=240286680]
-layout_mode = 0
-alignment = 1
-
-[node name="ScoreLabel" type="Label" parent="UI/GameUI/HBoxContainer" unique_id=380366781]
-layout_mode = 2
-theme = ExtResource("5_eow3j")
-text = "Score: "
-
-[node name="Score" type="Label" parent="UI/GameUI/HBoxContainer" unique_id=1319901375]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("5_eow3j")
-text = "_err"
-
-[node name="PauseMenu" type="Control" parent="UI" unique_id=33252457]
-unique_name_in_owner = true
+[node name="MainMenu" parent="UI" unique_id=1346217320 instance=ExtResource("8_vef74")]
 visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/PauseMenu" unique_id=1996700346]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.29803923)
-
-[node name="Label2" type="Label" parent="UI/PauseMenu" unique_id=1951034065]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -139.5
-offset_top = -48.0
-offset_right = 139.5
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 70
-text = "Paused"
-
-[node name="GameOver" type="Control" parent="UI" unique_id=1238133911]
-unique_name_in_owner = true
+[node name="SettingsMenu" parent="UI" unique_id=1178187265 instance=ExtResource("11_iotsf")]
 visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="UI/GameOver" unique_id=1120344625]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.29803923)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOver" unique_id=547341222]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -190.0
-offset_top = -98.0
-offset_right = 190.0
-offset_bottom = 98.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/GameOver/VBoxContainer" unique_id=1585429469]
-layout_mode = 2
-theme_override_font_sizes/font_size = 100
-text = "Game Over"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/GameOver/VBoxContainer" unique_id=1551239556]
-layout_mode = 2
-alignment = 1
-
-[node name="ScoreLabel" type="Label" parent="UI/GameOver/VBoxContainer/HBoxContainer" unique_id=317701341]
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "Score: "
-
-[node name="DeathScore" type="Label" parent="UI/GameOver/VBoxContainer/HBoxContainer" unique_id=508138361]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "_err"
-
-[node name="RestartDelay" type="Timer" parent="UI/GameOver" unique_id=1308419212]
-unique_name_in_owner = true
-wait_time = 0.5
-one_shot = true
-
-[node name="Settings_PanelContainer" type="PanelContainer" parent="UI" unique_id=480129997]
-unique_name_in_owner = true
-visible = false
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -158.0
-offset_top = -125.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Settings_PanelContainer" unique_id=82853939]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=1791613726]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Settings"
-horizontal_alignment = 1
-uppercase = true
-
-[node name="HSeparator" type="HSeparator" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=1929166179]
-layout_mode = 2
-
-[node name="SFX_HBoxContainer3" type="HBoxContainer" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=217408437]
-layout_mode = 2
-
-[node name="AnimateCheckBox" type="CheckBox" parent="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer3" unique_id=977202607]
-layout_mode = 2
-button_pressed = true
-text = "Animations"
-
-[node name="Music_HBoxContainer" type="HBoxContainer" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=513758592]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer" unique_id=1747094028]
-layout_mode = 2
-text = " Music "
-vertical_alignment = 1
-
-[node name="Music_HSlider" type="HSlider" parent="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer" unique_id=1431900254]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-max_value = 1.0
-step = 0.01
-value = 1.0
-
-[node name="SFX_HBoxContainer2" type="HBoxContainer" parent="UI/Settings_PanelContainer/VBoxContainer" unique_id=981494972]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2" unique_id=1978493563]
-layout_mode = 2
-text = " SFX     "
-vertical_alignment = 1
-
-[node name="SFX_HSlider" type="HSlider" parent="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2" unique_id=1771059721]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-max_value = 1.0
-step = 0.01
-value = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1781400831]
 zoom = Vector2(0.78, 0.78)
@@ -321,13 +197,17 @@ zoom = Vector2(0.78, 0.78)
 process_mode = 3
 stream = ExtResource("6_j5wjh")
 volume_db = -20.0
-autoplay = true
 bus = &"Music"
 
 [connection signal="timeout" from="Enemies/enemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
 [connection signal="timeout" from="Enemies/spawnTimeTimer" to="." method="_on_spawn_time_timer_timeout"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_player_death"]
-[connection signal="timeout" from="UI/GameOver/RestartDelay" to="." method="_on_restart_delay_timeout"]
-[connection signal="toggled" from="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer3/AnimateCheckBox" to="." method="_on_animate_check_box_toggled"]
-[connection signal="drag_ended" from="UI/Settings_PanelContainer/VBoxContainer/Music_HBoxContainer/Music_HSlider" to="." method="_on_music_hslider_drag_ended"]
-[connection signal="drag_ended" from="UI/Settings_PanelContainer/VBoxContainer/SFX_HBoxContainer2/SFX_HSlider" to="." method="_on_sfx_hslider_drag_ended"]
+[connection signal="menu_button" from="UI/PauseScreen" to="UI" method="showMainMenu"]
+[connection signal="settings_button" from="UI/PauseScreen" to="UI" method="showSettings"]
+[connection signal="menu_button" from="UI/GameOverScreen" to="UI" method="showMainMenu"]
+[connection signal="restart_button" from="UI/GameOverScreen" to="UI" method="startGame"]
+[connection signal="settings_button" from="UI/GameOverScreen" to="UI" method="showSettings"]
+[connection signal="levels_button" from="UI/MainMenu" to="UI" method="showLevels"]
+[connection signal="play_button" from="UI/MainMenu" to="UI" method="startGame"]
+[connection signal="settings_button" from="UI/MainMenu" to="UI" method="showSettings"]
+[connection signal="back_button" from="UI/SettingsMenu" to="UI" method="prevFromSettings"]

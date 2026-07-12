@@ -3,7 +3,7 @@ extends Node2D
 
 # game flow
 var startable := true	## if the game can be started
-var running := false		## if the game is running right now
+var running := false	## if the game is running right now
 var score := 0			## increase score on enemy death
 
 # general nodes
@@ -11,6 +11,9 @@ var score := 0			## increase score on enemy death
 @onready var player := get_node("Player")
 @onready var camera := $Camera2D
 @onready var scoreUI := %Score
+@onready var UI := %UI		## manages all menu UI
+@onready var pauseScreen := %PauseScreen
+@onready var gameOverScreen := %GameOverScreen
 
 # enemies
 @onready var spawnTimer := %enemySpawnTimer
@@ -21,8 +24,6 @@ var musicReverbIdx := 0	## effect index in the music bus
 var musicLPIdx := 1
 var musicHPIdx := 2
 @onready var music := $Music	## game music AudioStreamPlayer
-@onready var musicSlider := %Music_HSlider	## slider controlling the volume of the music bus
-@onready var sfxSlider := %SFX_HSlider
 @onready var musicAudioBus := AudioServer.get_bus_index("Music")	## index of the music bus itself
 @onready var sfxAudioBus := AudioServer.get_bus_index("SFX")
 @onready var musicReverb := AudioServer.get_bus_effect(musicAudioBus, musicReverbIdx) as AudioEffectReverb	## effect instance
@@ -38,23 +39,37 @@ var pauseTween: Tween			## tween obj for game pauses
 @export_group("dev cheats", "dev_")			## some only apply on game start
 @export var dev_disableEnemySpawn := false	## disable all enemy spawns
 @export var dev_beefyPlayer := false		## give [member player] infinite health
-
+@export var dev_ignoreReset := false		## dont reset things on game start
+@export var dev_cheatKeys := false			## activate cheats shortcuts (see [method dev_cheats])
+@export var dev_skipMenu := false			## directly start the game (dont show the main menu)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if dev_beefyPlayer:
+		push_warning("dev_beefyPlayer: active")
 		player.max_health = INF
 	
-	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
-	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
-	
-	gameStart(true)
+	if dev_skipMenu:
+		gameStart(true)
+	else:
+		UI.showMainMenu()
+		get_tree().paused = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if self.running:
+		#if Input.is_action_just_pressed("pause"):
+		#	pauseScreen.pause(true)
+		if dev_cheatKeys:
+			dev_cheats()
 	#print("AudioPeak: ", max(AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0), AudioServer.get_bus_peak_volume_right_db(AudioServer.get_bus_index("Master"), 0)))
 	pass
 
+func _unhandled_input(event: InputEvent) -> void:
+	if self.running:
+		if event.is_action_pressed("pause"):
+			pauseScreen.pause(true)
+			get_viewport().set_input_as_handled()
 
 #region HELPER
 ## reset and start the game (force: force a game start even if its in a bad state)
@@ -65,18 +80,21 @@ func gameStart(force:bool = false) -> bool:
 	startable = false
 	
 	# reset
-	%enemySpawnTimer.wait_time = 4.
-	AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, false)
-	music.playing = true
-	# free all enemies in EnemyContainer
-	for e in enemyContainer.get_children():	
-		if e is EnemyBase:	# savety check
-			e.queue_free()
-	player.reset()
-	rot.reset()
-	%GameOver.visible = false
-	%PauseMenu.visible = false
-	%Settings_PanelContainer.visible = false
+	if dev_ignoreReset:
+		push_warning("dev_ignoreReset: active")
+	else:
+		%enemySpawnTimer.wait_time = 4.
+		AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, false)
+		music.playing = true
+		# free all enemies in EnemyContainer
+		for e in enemyContainer.get_children():	
+			if e is EnemyBase:	# savety check
+				# disable collisions / make invisible (just in case the queue_free takes a bit)
+				e.collision_layer = 0
+				e.visible = false
+				e.queue_free()
+		player.reset()
+		rot.reset()
 	
 	# prepare
 	updateAnimate()
@@ -88,26 +106,29 @@ func gameStart(force:bool = false) -> bool:
 	for n in 4:
 		spawn_enemy()
 	
+	get_tree().paused = false
 	running = true
 	return true
 
-## called when the game ends
-func gameEnd() -> void:
+## called when the game ends (abort: just stop the game, without endscreen)
+func gameEnd(abort:=false) -> void:
 	running = false
+	# stop music
 	AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, true)
 	music.playing = false
-	%DeathScore.text = str(score)
-	%GameOver.visible = true
-	%Settings_PanelContainer.visible = true
+	# reset pause animations (in case we come from a pause)
+	pauseAnim(false)
+	if not abort:
+		# show gameOverScreen
+		gameOverScreen.death(score)
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	%RestartDelay.start()
+	startable = true
 
 ## called right before/after a pause
-func pause(start:bool = true) -> void:
+func pauseAnim(start:bool = true) -> void:
 	# menus
-	%PauseMenu.visible = start
-	%Settings_PanelContainer.visible = start
+	#%Settings_PanelContainer.visible = start
 	
 	# audio
 	if start:
@@ -137,6 +158,7 @@ func reset_scene():
 func spawn_enemy(type="res://Enemies/enemy_melee.tscn") -> void:
 	if dev_disableEnemySpawn:
 		# enemy spawn kill switch
+		push_warning("dev_disableEnemySpawn: active")
 		return
 	var randValue := randf()
 	#print("enemy spawn: ", type, ", ", randValue)
@@ -151,18 +173,21 @@ func spawn_enemy(type="res://Enemies/enemy_melee.tscn") -> void:
 func updateScore(newScore:int=score) -> void:
 	score = newScore
 	scoreUI.text = str(score)
-
-## update the animate value of some children
-func updateAnimate() -> void:
-	player.animate = animate
-	rot.animate = animate
-	player.animateUpdate()
-	rot.animateUpdate()
-	for e in enemyContainer.get_children():
-		if "animate" in e:
-			e.animate = animate
 #endregion HELPER
 
+#region DEV
+## enable some cheats with keyboard shortcuts
+## L_CTR + ?: D: damage, H: health 
+func dev_cheats() -> void:
+	if not Input.is_action_pressed("dev_cheats"): return
+	if Input.is_key_pressed(KEY_D):
+		print("dev_cheats: damage player")
+		player.damage(player.max_health/100)
+	if Input.is_key_pressed(KEY_H):
+		print("dev_cheats: player max_health")
+		player.health = player.max_health
+		player.damage(0, true)
+#endregion DEV
 
 #region SIGNALS
 ## called on enemy death
@@ -196,27 +221,20 @@ func _on_spawn_time_timer_timeout() -> void:
 func _on_player_player_death() -> void:
 	anim_death()
 	gameEnd()
-
-## force wait timer before allowing to restart
-func _on_restart_delay_timeout() -> void:
-	startable = true
-
-func _on_animate_check_box_toggled(toggled_on: bool) -> void:
-	animate = toggled_on
-	updateAnimate()
-	pass # Replace with function body.
 #endregion SIGNALS
 
 
-#region AUDIO
-func _on_music_hslider_drag_ended(_value_changed: bool) -> void:
-	AudioServer.set_bus_volume_linear(musicAudioBus, musicSlider.value)
-func _on_sfx_hslider_drag_ended(_value_changed: bool) -> void:
-	AudioServer.set_bus_volume_linear(sfxAudioBus, sfxSlider.value)
-#endregion AUDIO
-
-
 #region ANIMATE
+## update the animate value of some children
+func updateAnimate() -> void:
+	player.animate = animate
+	rot.animate = animate
+	player.animateUpdate()
+	rot.animateUpdate()
+	for e in enemyContainer.get_children():
+		if "animate" in e:
+			e.animate = animate
+
 func anim_death() -> void:
 	if animTween:
 		animTween.kill()

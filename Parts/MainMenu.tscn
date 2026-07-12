@@ -1,0 +1,316 @@
+[gd_scene format=3 uid="uid://dg13byed0ilsd"]
+
+[ext_resource type="Texture2D" uid="uid://dqk6jqu75kp6o" path="res://Assets/sprites/loose sprites/part-enemy_ufo11.png" id="1_damu2"]
+[ext_resource type="Script" uid="uid://dk2knxnjecdik" path="res://Parts/MainMenu.gd" id="1_kbqlr"]
+[ext_resource type="Texture2D" uid="uid://ckcrbxrcyfepx" path="res://Assets/sprites/loose sprites/part-enemy_ufo1.png" id="2_8eens"]
+[ext_resource type="Texture2D" uid="uid://c0gtaq4o7oqko" path="res://Assets/sprites/loose sprites/part-enemy_ufo2.png" id="3_8y4gp"]
+[ext_resource type="Texture2D" uid="uid://dphi7yswm1re8" path="res://Assets/sprites/loose sprites/part-enemy_ufo3.png" id="4_4ofva"]
+[ext_resource type="Texture2D" uid="uid://dss8xc5u2yfda" path="res://Assets/sprites/loose sprites/part-enemy_ufo4.png" id="5_kbqlr"]
+[ext_resource type="Texture2D" uid="uid://ch4s34ahg2xqb" path="res://Assets/sprites/loose sprites/part-enemy_ufo5.png" id="6_egdm5"]
+[ext_resource type="Texture2D" uid="uid://cu0wowsl5f5tc" path="res://Assets/sprites/loose sprites/part-enemy_ufo6.png" id="7_k1e7x"]
+[ext_resource type="Texture2D" uid="uid://cf3ti1sccruf5" path="res://Assets/sprites/loose sprites/part-enemy_ufo7.png" id="8_my77k"]
+[ext_resource type="Texture2D" uid="uid://byg27hjwrwpph" path="res://Assets/sprites/loose sprites/part-enemy_ufo8.png" id="9_b1k20"]
+[ext_resource type="Texture2D" uid="uid://3rlkrhuia6qg" path="res://Assets/sprites/loose sprites/part-enemy_ufo9.png" id="10_shfvh"]
+[ext_resource type="Texture2D" uid="uid://bhb77sfmvd3qa" path="res://Assets/sprites/loose sprites/part-enemy_ufo10.png" id="11_m5v03"]
+[ext_resource type="Texture2D" uid="uid://cvlgpdyr77xwd" path="res://Assets/sprites/loose sprites/part-enemy_death1.png" id="12_vr4q3"]
+[ext_resource type="Texture2D" uid="uid://ddd4cb1t7n18k" path="res://Assets/sprites/loose sprites/part-enemy_death2.png" id="13_bonxn"]
+[ext_resource type="Texture2D" uid="uid://c16p0f4yhcbt3" path="res://Assets/sprites/loose sprites/part-enemy_death3.png" id="14_m5j3x"]
+[ext_resource type="Texture2D" uid="uid://bmbyps3d8adcq" path="res://Assets/sprites/loose sprites/part-enemy_death4.png" id="15_j17cg"]
+[ext_resource type="Texture2D" uid="uid://nnhmtwmu18a" path="res://Assets/sprites/loose sprites/part-enemy_death5.png" id="16_yr3yq"]
+[ext_resource type="Texture2D" uid="uid://b35m75f8uh800" path="res://Assets/sprites/loose sprites/part-enemy_death6.png" id="17_f6n41"]
+[ext_resource type="Texture2D" uid="uid://b21ets0auic3q" path="res://Assets/sprites/loose sprites/part-enemy_death7.png" id="18_cip50"]
+[ext_resource type="Texture2D" uid="uid://fga2nn5uikxr" path="res://Assets/sprites/loose sprites/part-enemy_death8.png" id="19_ipvwk"]
+[ext_resource type="Texture2D" uid="uid://bn7k4njyre2m6" path="res://Assets/sprites/loose sprites/part-enemy_death9.png" id="20_rhydy"]
+[ext_resource type="Texture2D" uid="uid://b5b1qdgybl4yf" path="res://Assets/sprites/loose sprites/part-enemy_death10.png" id="21_jbdxt"]
+[ext_resource type="Texture2D" uid="uid://7ho80rfuheq0" path="res://Assets/sprites/loose sprites/part-enemy_death11.png" id="22_2jav7"]
+[ext_resource type="Texture2D" uid="uid://b24l1sr1uc8fm" path="res://Assets/sprites/loose sprites/part-enemy_hit1.png" id="23_ygg3m"]
+[ext_resource type="Texture2D" uid="uid://cwhquc01pomwj" path="res://Assets/sprites/loose sprites/part-enemy_hit2.png" id="24_7xbys"]
+[ext_resource type="Texture2D" uid="uid://dt600cxcr8fsc" path="res://Assets/sprites/loose sprites/part-enemy_hit3.png" id="25_e2koq"]
+[ext_resource type="Texture2D" uid="uid://cgb06fp5ixsp1" path="res://Assets/sprites/loose sprites/part-enemy_hit4.png" id="26_8g4uk"]
+[ext_resource type="Texture2D" uid="uid://br7p6uw7pb5y5" path="res://Assets/sprites/loose sprites/part-enemy_hit5.png" id="27_geops"]
+[ext_resource type="Texture2D" uid="uid://c4kkb28ikve5n" path="res://Assets/sprites/loose sprites/part-enemy_hit6.png" id="28_a4uyf"]
+[ext_resource type="Texture2D" uid="uid://dwg026eflqcuk" path="res://Assets/sprites/loose sprites/part-enemy_hit7.png" id="29_l22mk"]
+[ext_resource type="Texture2D" uid="uid://n070ligicbgq" path="res://Assets/sprites/loose sprites/part-enemy_hit8.png" id="30_21tsn"]
+[ext_resource type="Texture2D" uid="uid://desqsbtip3hai" path="res://Assets/sprites/loose sprites/part-enemy_hit9.png" id="31_ddxea"]
+[ext_resource type="Texture2D" uid="uid://dydxxvci3xdrj" path="res://Assets/sprites/loose sprites/part-enemy_hit10.png" id="32_kcmgp"]
+[ext_resource type="Texture2D" uid="uid://dy17cv5usj61y" path="res://Assets/sprites/loose sprites/part-enemy_hit11.png" id="33_yvagi"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="34_8eens"]
+[ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="35_4ofva"]
+[ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="36_kbqlr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k33gt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_damu2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8eens")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8y4gp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_4ofva")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_kbqlr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_egdm5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_k1e7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_my77k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_b1k20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_shfvh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_m5v03")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_vr4q3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_bonxn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_m5j3x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_j17cg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_yr3yq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_f6n41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_cip50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ipvwk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_rhydy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_jbdxt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_2jav7")
+}],
+"loop": 0,
+"name": &"die",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_ygg3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_7xbys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_e2koq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_8g4uk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_geops")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_a4uyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_l22mk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_21tsn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_ddxea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_kcmgp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_yvagi")
+}],
+"loop": 1,
+"name": &"hit",
+"speed": 10.0
+}]
+
+[node name="MainMenu" type="Control" unique_id=1346217320]
+propagate_maximum_size = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kbqlr")
+
+[node name="Background" type="Node2D" parent="." unique_id=1815241065]
+position = Vector2(653, 380)
+scale = Vector2(0.8, 0.8)
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=1151533482]
+custom_minimum_size = Vector2(1720, 1000)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -860.0
+offset_top = -500.0
+offset_right = 860.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.36112815, 0.36112815, 0.36112815, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=1695906911]
+self_modulate = Color(0.38039216, 0.53333336, 1, 0.13725491)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("35_4ofva")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background" unique_id=1416347839]
+modulate = Color(0.6156863, 0.78431374, 0.84705883, 1)
+self_modulate = Color(0.51652586, 0.51652557, 0.5165253, 0.78039217)
+texture = ExtResource("36_kbqlr")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=905762246]
+layout_mode = 0
+offset_left = 78.0
+offset_top = 54.0
+offset_right = 854.0
+offset_bottom = 291.0
+theme = ExtResource("34_8eens")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1756130848]
+layout_mode = 2
+theme = ExtResource("34_8eens")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=626437959]
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=328216460]
+layout_mode = 2
+theme = ExtResource("34_8eens")
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 150
+text = "Pintow"
+
+[node name="Author" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1597242425]
+visible = false
+layout_mode = 2
+offset_transform_enabled = true
+theme = ExtResource("34_8eens")
+theme_type_variation = &"HeaderMedium"
+text = "by egnrse"
+
+[node name="Author" type="Label" parent="." unique_id=24200836]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 237.0
+offset_right = 874.0
+offset_bottom = 281.0
+offset_transform_enabled = true
+theme = ExtResource("34_8eens")
+theme_type_variation = &"HeaderMedium"
+text = "by egnrse"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=346288798]
+modulate = Color(1, 0.8980392, 1, 1)
+position = Vector2(257, 532)
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_k33gt")
+autoplay = "default"
+
+[node name="Panel" type="Panel" parent="." unique_id=999910074]
+visible = false
+layout_mode = 0
+offset_left = 640.0
+offset_top = 380.0
+offset_right = 1283.0
+offset_bottom = 727.0
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1091914105]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("34_8eens")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2" unique_id=1138782166]
+layout_mode = 2
+theme = ExtResource("34_8eens")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2/MarginContainer" unique_id=1169231386]
+custom_minimum_size = Vector2(615, 0)
+layout_mode = 2
+
+[node name="ButtonPlay" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=2141195550]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("34_8eens")
+theme_override_font_sizes/font_size = 55
+text = "Play
+"
+
+[node name="ButtonLevel" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=828048330]
+layout_mode = 2
+theme = ExtResource("34_8eens")
+theme_override_font_sizes/font_size = 40
+disabled = true
+text = "Levels"
+
+[node name="ButtonSettings" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=2081033089]
+layout_mode = 2
+theme = ExtResource("34_8eens")
+theme_override_font_sizes/font_size = 40
+text = "Settings"
+
+[node name="ButtonQuit" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=1865606233]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("34_8eens")
+theme_override_font_sizes/font_size = 40
+text = "Close"
+
+[node name="CloseDialog" type="ConfirmationDialog" parent="." unique_id=1197782274]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Closing Game!"
+initial_position = 2
+size = Vector2i(285, 107)
+always_on_top = true
+popup_window = true
+popup_wm_hint = true
+dialog_text = "You sure?"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonPlay" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonLevel" to="." method="_on_button_level_pressed"]
+[connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
+[connection signal="confirmed" from="CloseDialog" to="." method="_on_close_dialog_confirmed"]

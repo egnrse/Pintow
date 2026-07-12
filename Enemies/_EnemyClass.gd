@@ -121,7 +121,7 @@ func die() -> void:
 		push_warning("die(): called but already dead: ", self)
 		return
 	alive = false
-	#self.visible = false	# deprecated, use anim_die
+	
 	# disable collisions
 	collision_layer = 0
 	collision_mask = 0
@@ -157,7 +157,9 @@ func anim_damage(amount: int = 1) -> void:
 		await animTween.finished
 	
 func anim_die() -> void:
-	if not animate: return
+	if not animate:
+		self.visible = false
+		return
 	
 	if animSprite and animSprite.sprite_frames.has_animation(animNameDie):
 		animSprite.play(animNameDie)

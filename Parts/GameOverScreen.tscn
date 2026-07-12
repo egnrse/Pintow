@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://cr307u4s54nqu"]
+
+[ext_resource type="Script" uid="uid://bchbguji3fjfo" path="res://Parts/GameOverScreen.gd" id="1_2avcy"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="1_4oamo"]
+
+[node name="GameOverScreen" type="Control" unique_id=616256654]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2avcy")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=146240441]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29803923)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=379895919]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -98.0
+offset_right = 190.0
+offset_bottom = 98.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelGameOver" type="Label" parent="VBoxContainer" unique_id=2019253631]
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+theme_type_variation = &"HeaderLarge"
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1149772547]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1262748070]
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+theme_type_variation = &"HeaderMedium"
+text = "Score: "
+
+[node name="DeathScore" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1195711077]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+theme_type_variation = &"HeaderMedium"
+text = "_err"
+
+[node name="ButtonVBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=338663631]
+custom_minimum_size = Vector2(425, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ButtonVBoxContainer" unique_id=1327373147]
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+
+[node name="ButtonRestart" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=1346100552]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+text = "Restart"
+
+[node name="ButtonSettings" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=611705047]
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+text = "Settings"
+
+[node name="ButtonMenu" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=40997387]
+layout_mode = 2
+theme = ExtResource("1_4oamo")
+text = "Menu
+"
+
+[node name="RestartDelay" type="Timer" parent="." unique_id=539719702]
+unique_name_in_owner = true
+wait_time = 0.3
+one_shot = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonRestart" to="." method="_on_button_restart_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonMenu" to="." method="_on_button_menu_pressed"]
+[connection signal="timeout" from="RestartDelay" to="." method="_on_restart_delay_timeout"]

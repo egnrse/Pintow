@@ -1,0 +1,73 @@
+[gd_resource type="Theme" format=3 uid="uid://dhwn2srwqlkqs"]
+
+[ext_resource type="StyleBox" uid="uid://bea7p717cmy1l" path="res://Assets/ButtonNormal_texture.tres" id="1_gu0d2"]
+[ext_resource type="FontFile" uid="uid://cfylfvbtq6db2" path="res://Assets/depixel/DePixelHalbfett.otf" id="2_8c7w4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gu0d2"]
+noise_type = 5
+seed = 6
+frequency = 0.0005
+fractal_gain = 2.0
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8c7w4"]
+height = 100
+noise = SubResource("FastNoiseLite_gu0d2")
+invert = true
+seamless_blend_skirt = 0.792
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r1qlm"]
+texture = SubResource("NoiseTexture2D_8c7w4")
+texture_margin_top = 10.0
+texture_margin_bottom = 10.0
+modulate_color = Color(0.2820849, 0.021748886, 0.09800158, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8c7w4"]
+noise_type = 5
+seed = 6
+frequency = 0.0005
+fractal_gain = 2.0
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_r1qlm"]
+height = 100
+noise = SubResource("FastNoiseLite_8c7w4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sv3t4"]
+texture = SubResource("NoiseTexture2D_r1qlm")
+texture_margin_top = 10.0
+texture_margin_bottom = 10.0
+modulate_color = Color(0.41127068, 0.045098715, 0.15517089, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_8c7w4"]
+color = Color(0.4140101, 0.35804346, 0.43330893, 1)
+grow_begin = 17.0
+grow_end = 17.0
+thickness = 3
+
+[sub_resource type="FontVariation" id="FontVariation_xig7x"]
+base_font = ExtResource("2_8c7w4")
+variation_embolden = -0.5
+baseline_offset = 0.04
+
+[resource]
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_hover_color = Color(1.1585813, 0.6217448, 1.3424293, 1)
+Button/colors/font_pressed_color = Color(0.5921569, 0.30588236, 0.6901961, 1)
+Button/font_sizes/font_size = 30
+Button/styles/hover = SubResource("StyleBoxTexture_r1qlm")
+Button/styles/normal = ExtResource("1_gu0d2")
+Button/styles/pressed = SubResource("StyleBoxTexture_sv3t4")
+HSeparator/constants/separation = 16
+HSeparator/styles/separator = SubResource("StyleBoxLine_8c7w4")
+HeaderLarge/font_sizes/font_size = 90
+HeaderMedium/font_sizes/font_size = 35
+HeaderSmall/font_sizes/font_size = 16
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20
+Node/colors/font_color = Color(0.8980392, 0.78431374, 0.9372549, 1)
+Node/colors/font_outline_color = Color(0, 0, 0, 1)
+Node/constants/outline_size = 3
+Node/fonts/font = SubResource("FontVariation_xig7x")

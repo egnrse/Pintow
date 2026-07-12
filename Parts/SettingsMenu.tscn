@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://mebgd2vbtgl0"]
+
+[ext_resource type="Script" uid="uid://cc4rlf85hitru" path="res://Parts/SettingsMenu.gd" id="1_6y6ij"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="2_1ahpb"]
+[ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="2_pq6f4"]
+[ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="3_fax1r"]
+
+[node name="SettingsMenu" type="Control" unique_id=1178187265]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6y6ij")
+
+[node name="Background" type="Node2D" parent="." unique_id=891696227]
+position = Vector2(653, 380)
+scale = Vector2(0.8, 0.8)
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=1416816524]
+custom_minimum_size = Vector2(1720, 1000)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -860.0
+offset_top = -500.0
+offset_right = 860.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.36112815, 0.36112815, 0.36112815, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=2144493027]
+self_modulate = Color(0.38039216, 0.53333336, 1, 0.13725491)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("2_pq6f4")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background" unique_id=516542789]
+modulate = Color(0.6156863, 0.78431374, 0.84705883, 1)
+self_modulate = Color(0.51652586, 0.51652557, 0.5165253, 0.78039217)
+texture = ExtResource("3_fax1r")
+
+[node name="LabelSettings" type="Label" parent="." unique_id=34499121]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("2_1ahpb")
+theme_type_variation = &"HeaderLarge"
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ButtonBack" type="Button" parent="." unique_id=1062303030]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 47.0
+offset_right = 296.0
+offset_bottom = 138.0
+theme = ExtResource("2_1ahpb")
+text = "Back"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=193500200]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.54800004
+anchor_top = 0.50200003
+anchor_right = 0.54800004
+anchor_bottom = 0.50200003
+offset_left = -375.44006
+offset_top = -349.44003
+offset_right = 376.55994
+offset_bottom = 349.55997
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_1ahpb")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1312373905]
+layout_mode = 2
+offset_transform_enabled = true
+theme = ExtResource("2_1ahpb")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer" unique_id=1555351749]
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+follow_focus = true
+draw_focus_border = true
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer" unique_id=1938739886]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="LabelSettings" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1876428613]
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+theme_type_variation = &"HeaderLarge"
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1268153694]
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+
+[node name="Animate_HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1217611409]
+layout_mode = 2
+alignment = 1
+
+[node name="AnimateCheckBox" type="CheckBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/Animate_HBoxContainer" unique_id=1807920815]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+button_pressed = true
+text = " Animations"
+flat = true
+alignment = 1
+autowrap_trim_flags = 0
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=115356601]
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+
+[node name="Music_HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=853541864]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/Music_HBoxContainer" unique_id=151818288]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+theme_type_variation = &"HeaderMedium"
+text = " Music "
+vertical_alignment = 1
+
+[node name="Music_HSlider" type="HSlider" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/Music_HBoxContainer" unique_id=1544059519]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("2_1ahpb")
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFX_HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1727782861]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/SFX_HBoxContainer" unique_id=1710767604]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+theme_type_variation = &"HeaderMedium"
+text = " SFX"
+vertical_alignment = 1
+
+[node name="SFX_HSlider" type="HSlider" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/SFX_HBoxContainer" unique_id=1199164496]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("2_1ahpb")
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=2083404378]
+layout_mode = 2
+theme = ExtResource("2_1ahpb")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/Animate_HBoxContainer/AnimateCheckBox" to="." method="_on_animate_check_box_toggled"]
+[connection signal="drag_ended" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/Music_HBoxContainer/Music_HSlider" to="." method="_on_music_h_slider_drag_ended"]
+[connection signal="drag_ended" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/SFX_HBoxContainer/SFX_HSlider" to="." method="_on_sfx_h_slider_drag_ended"]

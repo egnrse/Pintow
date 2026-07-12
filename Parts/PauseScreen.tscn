@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://caq7obtfk8d64"]
+
+[ext_resource type="Script" uid="uid://ctu3vvqbo7c5j" path="res://Parts/PauseScreen.gd" id="1_kwpux"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="1_rdmy5"]
+
+[node name="PauseScreen" type="Control" unique_id=15389843]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kwpux")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1935222725]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29803923)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1627757814]
+layout_mode = 0
+offset_left = 375.0
+offset_top = 195.0
+offset_right = 904.0
+offset_bottom = 525.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LabelPause" type="Label" parent="VBoxContainer" unique_id=879189499]
+layout_mode = 2
+theme = ExtResource("1_rdmy5")
+theme_type_variation = &"HeaderLarge"
+text = "Paused"
+horizontal_alignment = 1
+
+[node name="ButtonVBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1922880797]
+custom_minimum_size = Vector2(425, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ButtonContinue" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=1366716615]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_rdmy5")
+text = "Continue"
+
+[node name="ButtonSettings" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=147354136]
+layout_mode = 2
+theme = ExtResource("1_rdmy5")
+text = "Settings"
+
+[node name="ButtonMenu" type="Button" parent="VBoxContainer/ButtonVBoxContainer" unique_id=204264570]
+layout_mode = 2
+theme = ExtResource("1_rdmy5")
+text = "Menu
+"
+
+[node name="waitTimer" type="Timer" parent="." unique_id=1737117366]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonContinue" to="." method="_on_button_continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonVBoxContainer/ButtonMenu" to="." method="_on_button_menu_pressed"]
+[connection signal="timeout" from="waitTimer" to="." method="_on_wait_timer_timeout"]

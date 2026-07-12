@@ -40,15 +40,16 @@ func _physics_process(delta: float) -> void:
 			damage(DAMAGE_RATE * count * delta)
 
 ## call to damage [member self] (decreases [member health])
-func damage(amount: float = 1) -> void:
-	if amount <= 0:
+## (amount: how much to damage, negative: dont warn for negative amounts)
+func damage(amount: float = 1, negative := false) -> void:
+	if amount <= 0 and not negative:
 		push_warning("player.damage(): amount <= 0, ", amount)
 	self.health -=amount
 	healthBar.update()
 	
 	if health <= 0:
 		die()
-	else:
+	elif amount > 0:
 		var hurtAudio = $HurtAudio
 		if not hurtAudio.playing:
 			hurtAudio.play()

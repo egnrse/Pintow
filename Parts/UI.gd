@@ -1,32 +1,58 @@
 ## UI script, which ignores pause
+## manages menu UI
+## (eg. MainMenu, SettingsMenu, ...)
 extends CanvasLayer
 
 @onready var Game = get_parent()
 
-var mouseMode = null	## remember the previous mouse mode
+# menu nodes (managed by UI)
+@onready var mainMenu = $MainMenu
+@onready var settingsMenu = $SettingsMenu
+@onready var levelsMenu = $Levels_TODO
+# screen nodes (managed by Game)
+@onready var pauseScreen = $PauseScreen
+@onready var gameOverScreen = $GameOverScreen
 
+var settingsCaller: Node	## who called settings previously (to restore focus/visibility)
 
 func _process(_delta):
-	# (re)start game
-	if Input.is_action_pressed("continue") and Game.startable:
-		if $Settings_PanelContainer.get_global_rect().has_point(get_viewport().get_mouse_position()):
-			return # clicked inside settings panel, ignore
-		get_tree().paused = false
-		Game.pause(false)
-		Game.gameStart()
-	
-	# (un)pause
-	if not Game.startable and Game.running:
-		var justPaused = false
-		if Input.is_action_just_pressed("pause") and get_tree().paused == false:
-			Game.pause(true)
-			mouseMode = Input.mouse_mode
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			get_tree().paused = true
-			justPaused = true
-		if Input.is_action_just_pressed("continue") and not justPaused and get_tree().paused == true:
-			if $Settings_PanelContainer.get_global_rect().has_point(get_viewport().get_mouse_position()):
-				return # clicked inside settings panel, ignore
-			if mouseMode: Input.mouse_mode = mouseMode
-			get_tree().paused = false
-			Game.pause(false)
+	pass
+
+
+func startGame(caller:Node = null, force:bool = false) -> void:
+	if Game.gameStart(force):
+		hideCaller(caller)
+
+#region manageUI
+func showMainMenu(caller:Node = null) -> void:
+	mainMenu.visible = true
+	hideCaller(caller)
+func showLevels(caller:Node = null) -> void:
+	push_error("levels menu not implemented")
+	return
+	levelsMenu.visible = true
+	hideCaller(caller)
+func showSettings(caller:Node = null) -> void:
+	settingsMenu.visible = true
+	hideCaller(caller)
+	settingsCaller = caller
+func prevFromSettings() -> void:
+	settingsMenu.visible = false
+	if settingsCaller: settingsCaller.visible = true
+
+## hide all menus/screens (currently not in use)
+func hideMenus() -> void:
+	mainMenu.visible = false
+	levelsMenu.visible = false
+	settingsMenu.visible = false
+	pauseScreen.visible = false
+	gameOverScreen.visible = false
+
+## set caller.visible to false (returns true if that worked)
+func hideCaller(caller:Node = null) -> bool:
+	if caller:
+		caller.visible = false
+		return true
+	else:
+		return false
+#endregion manageUI
