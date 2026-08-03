@@ -261,5 +261,6 @@ bus = &"Music"
 [connection signal="levels_button" from="UI/MainMenu" to="UI" method="showLevels"]
 [connection signal="play_button" from="UI/MainMenu" to="UI" method="startGame"]
 [connection signal="settings_button" from="UI/MainMenu" to="UI" method="showSettings"]
+[connection signal="animate" from="UI/SettingsMenu" to="." method="_on_settings_menu_animate"]
 [connection signal="back_button" from="UI/SettingsMenu" to="UI" method="prevFromSettings"]
 [connection signal="pauseOption" from="UI/SettingsMenu" to="." method="_on_settings_menu_pause_option"]

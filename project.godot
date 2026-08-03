@@ -25,6 +25,10 @@ config/icon="uid://sgewickolrhq"
 
 buses/default_bus_layout="uid://ctc2jw8cignab"
 
+[autoload]
+
+Globals="*uid://t53ebh2jxrr1"
+
 [display]
 
 window/size/viewport_width=1280

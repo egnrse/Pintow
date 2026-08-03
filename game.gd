@@ -149,7 +149,7 @@ func pauseAnim(start:bool = true) -> void:
 			AudioServer.set_bus_effect_enabled(musicAudioBus, musicLPIdx, false)
 		)
 
-## @deprecated game restart
+## @deprecated: game restart (use [method gameEnd]/[method gameStart] instead)
 func reset_scene():
 	push_warning("reset_scene(): is deprecated, use gameEnd()/gameStart()")
 	get_tree().reload_current_scene()
@@ -228,6 +228,9 @@ func _on_pause_button_container_pause() -> void:
 #endregion SIGNALS
 
 #region SETTINGS (setting signals/functions)
+func _on_settings_menu_animate(toggle: bool) -> void:
+	self.animate = toggle
+	updateAnimate()
 func _on_settings_menu_pause_option(option: int) -> void:
 	pauseContainer.setPauseOption(option)
 #endregion SETTINGS

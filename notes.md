@@ -27,3 +27,10 @@ sth circles the player/mouse
 
 Using mouse inertia? Like a rope to the player
 - Sometimes rotate the camera with the player
+
+
+
+## Infos
+### user://
+On Windows: %APPDATA%\Godot\app_userdata\Project Name
+On GNU/Linux: $HOME/.godot/app_userdata/Project Name
