@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="3_j5wjh"]
 [ext_resource type="Script" uid="uid://d0cswqqdagfvj" path="res://Parts/UI.gd" id="4_fc0e3"]
 [ext_resource type="AudioStream" uid="uid://cul5kyfur3ex7" path="res://Assets/Music/SpinToWin_MusicV2.mp3" id="6_j5wjh"]
+[ext_resource type="Script" uid="uid://dmge0lcvdohlk" path="res://Parts/PauseButtonContainer.gd" id="7_215e1"]
 [ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="7_vef74"]
 [ext_resource type="PackedScene" uid="uid://caq7obtfk8d64" path="res://Parts/PauseScreen.tscn" id="8_hve3p"]
+[ext_resource type="StyleBox" uid="uid://behyme3dyyb50" path="res://Assets/ButtonFlat_style.tres" id="8_lc2xo"]
 [ext_resource type="PackedScene" uid="uid://dg13byed0ilsd" path="res://Parts/MainMenu.tscn" id="8_vef74"]
 [ext_resource type="PackedScene" uid="uid://cr307u4s54nqu" path="res://Parts/GameOverScreen.tscn" id="9_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://mebgd2vbtgl0" path="res://Parts/SettingsMenu.tscn" id="11_iotsf"]
@@ -144,8 +146,54 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="PauseButtonContainer" type="Control" parent="UI/GameUI" unique_id=601822000]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+script = ExtResource("7_215e1")
+
+[node name="PauseButton1" type="Button" parent="UI/GameUI/PauseButtonContainer" unique_id=1878074484]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -49.0
+offset_bottom = 44.0
+grow_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-10, 11)
+offset_transform_visual_only = false
+theme = ExtResource("7_vef74")
+theme_override_styles/normal = ExtResource("8_lc2xo")
+text = "II"
+alignment = 2
+autowrap_trim_flags = 0
+
+[node name="PauseButton2" type="Button" parent="UI/GameUI/PauseButtonContainer" unique_id=2056127349]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_bottom = 44.0
+grow_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-10, 11)
+offset_transform_visual_only = false
+theme = ExtResource("7_vef74")
+theme_override_styles/normal = ExtResource("8_lc2xo")
+text = " l l"
+alignment = 0
+autowrap_trim_flags = 0
+
 [node name="ScorePanel" type="PanelContainer" parent="UI/GameUI" unique_id=287336635]
-layout_mode = 0
+layout_mode = 1
 offset_left = 11.0
 offset_top = 10.0
 offset_right = 270.0
@@ -202,6 +250,9 @@ bus = &"Music"
 [connection signal="timeout" from="Enemies/enemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
 [connection signal="timeout" from="Enemies/spawnTimeTimer" to="." method="_on_spawn_time_timer_timeout"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_player_death"]
+[connection signal="pause" from="UI/GameUI/PauseButtonContainer" to="." method="_on_pause_button_container_pause"]
+[connection signal="pressed" from="UI/GameUI/PauseButtonContainer/PauseButton1" to="UI/GameUI/PauseButtonContainer" method="_on_pause_button_1_pressed"]
+[connection signal="pressed" from="UI/GameUI/PauseButtonContainer/PauseButton2" to="UI/GameUI/PauseButtonContainer" method="_on_pause_button_2_pressed"]
 [connection signal="menu_button" from="UI/PauseScreen" to="UI" method="showMainMenu"]
 [connection signal="settings_button" from="UI/PauseScreen" to="UI" method="showSettings"]
 [connection signal="menu_button" from="UI/GameOverScreen" to="UI" method="showMainMenu"]
@@ -211,3 +262,4 @@ bus = &"Music"
 [connection signal="play_button" from="UI/MainMenu" to="UI" method="startGame"]
 [connection signal="settings_button" from="UI/MainMenu" to="UI" method="showSettings"]
 [connection signal="back_button" from="UI/SettingsMenu" to="UI" method="prevFromSettings"]
+[connection signal="pauseOption" from="UI/SettingsMenu" to="." method="_on_settings_menu_pause_option"]

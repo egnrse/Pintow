@@ -11,6 +11,7 @@ var score := 0			## increase score on enemy death
 @onready var player := get_node("Player")
 @onready var camera := $Camera2D
 @onready var scoreUI := %Score
+@onready var pauseContainer := %PauseButtonContainer
 @onready var UI := %UI		## manages all menu UI
 @onready var pauseScreen := %PauseScreen
 @onready var gameOverScreen := %GameOverScreen
@@ -58,8 +59,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if self.running:
-		#if Input.is_action_just_pressed("pause"):
-		#	pauseScreen.pause(true)
 		if dev_cheatKeys:
 			dev_cheats()
 	#print("AudioPeak: ", max(AudioServer.get_bus_peak_volume_left_db(AudioServer.get_bus_index("Master"), 0), AudioServer.get_bus_peak_volume_right_db(AudioServer.get_bus_index("Master"), 0)))
@@ -68,7 +67,7 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if self.running:
 		if event.is_action_pressed("pause"):
-			pauseScreen.pause(true)
+			pauseGame()
 			get_viewport().set_input_as_handled()
 
 #region HELPER
@@ -125,11 +124,12 @@ func gameEnd(abort:=false) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	startable = true
 
+## this is just a helper, DONT rely on it being called!
+func pauseGame() -> void:
+	pauseScreen.pause(true)
+
 ## called right before/after a pause
 func pauseAnim(start:bool = true) -> void:
-	# menus
-	#%Settings_PanelContainer.visible = start
-	
 	# audio
 	if start:
 		AudioServer.set_bus_effect_enabled(musicAudioBus, musicHPIdx, true)
@@ -175,7 +175,7 @@ func updateScore(newScore:int=score) -> void:
 	scoreUI.text = str(score)
 #endregion HELPER
 
-#region DEV
+#region DEV (development helpers)
 ## enable some cheats with keyboard shortcuts
 ## L_CTR + ?: D: damage, H: health 
 func dev_cheats() -> void:
@@ -189,7 +189,7 @@ func dev_cheats() -> void:
 		player.damage(0, true)
 #endregion DEV
 
-#region SIGNALS
+#region SIGNALS (gameplay related)
 ## called on enemy death
 func _on_enemy_death(entity, _position) -> void:
 	if 'score' in entity:
@@ -221,10 +221,18 @@ func _on_spawn_time_timer_timeout() -> void:
 func _on_player_player_death() -> void:
 	anim_death()
 	gameEnd()
+
+## pause button got pressed
+func _on_pause_button_container_pause() -> void:
+	pauseGame()
 #endregion SIGNALS
 
+#region SETTINGS (setting signals/functions)
+func _on_settings_menu_pause_option(option: int) -> void:
+	pauseContainer.setPauseOption(option)
+#endregion SETTINGS
 
-#region ANIMATE
+#region ANIMATE (handles animations)
 ## update the animate value of some children
 func updateAnimate() -> void:
 	player.animate = animate
