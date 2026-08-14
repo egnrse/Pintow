@@ -84,6 +84,8 @@ func _on_visibility_changed() -> void:
 	if self.visible:
 		if animateCheckBox:
 			animateCheckBox.grab_focus()
+		else:
+			push_warning("'animateCheckBox' cant be focused")
 
 ## return to the previous screen/menu
 func previousMenu():

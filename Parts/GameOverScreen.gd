@@ -14,7 +14,10 @@ var wait_active := false		## only allow button presses if false (if [member forc
 
 func _on_visibility_changed() -> void:
 	if self.visible:
-		restartButton.grab_focus()
+		if restartButton:
+			restartButton.grab_focus()
+		else:
+			push_warning("'restartButton' cant be focused")
 
 ## update all labels
 func update() -> void:

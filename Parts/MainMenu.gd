@@ -17,7 +17,11 @@ func _ready() -> void:
 
 func _on_visibility_changed() -> void:
 	if self.visible:
-		playButton.grab_focus()
+		if playButton:
+			playButton.grab_focus()
+		else:
+			push_warning("'playButton' cant be focused")
+
 
 func _on_button_play_pressed() -> void:
 	play_button.emit(self, true)

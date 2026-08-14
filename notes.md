@@ -25,12 +25,35 @@ sth circles the player/mouse
 - click for speed
 - clear enemies
 
-Using mouse inertia? Like a rope to the player
-- Sometimes rotate the camera with the player
+## Levels
+load:
+- Background
+- Collisions
+- World Borders
+- Enemies types
+- Music
+handle:
+- spawning (where/when)
+- sounds
+functions:
+- start/pause/reset
+signal:
+- enemyDeath
 
+### TODO.Ideas
+smooth going into next level:
+	load new levels behind current one
+how to propagate settings? (eg. animation)
+
+Game > Levels > currentLevel
+	- Background
+	- Collisions
+	- WorldBorder
+	- Enemies
+		= EnemyContainer (enemy instances)
 
 
 ## Infos
 ### user://
 On Windows: %APPDATA%\Godot\app_userdata\Project Name
-On GNU/Linux: $HOME/.godot/app_userdata/Project Name
+On GNU/Linux: $$XDG_DATA_HOME/godot/app_userdata/Project Name

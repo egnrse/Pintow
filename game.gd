@@ -15,10 +15,7 @@ var score := 0			## increase score on enemy death
 @onready var UI := %UI		## manages all menu UI
 @onready var pauseScreen := %PauseScreen
 @onready var gameOverScreen := %GameOverScreen
-
-# enemies
-@onready var spawnTimer := %enemySpawnTimer
-@onready var enemyContainer := %EnemyContainer
+@onready var currentLevel := %Level
 
 # audio
 var musicReverbIdx := 0	## effect index in the music bus
@@ -38,7 +35,7 @@ var pauseTween: Tween			## tween obj for game pauses
 
 # extra
 @export_group("dev cheats", "dev_")			## some only apply on game start
-@export var dev_disableEnemySpawn := false	## disable all enemy spawns
+#@export var dev_disableEnemySpawn := false	## disable all enemy spawns
 @export var dev_beefyPlayer := false		## give [member player] infinite health
 @export var dev_ignoreReset := false		## dont reset things on game start
 @export var dev_cheatKeys := false			## activate cheats shortcuts (see [method dev_cheats])
@@ -54,7 +51,6 @@ func _ready() -> void:
 		gameStart(true)
 	else:
 		UI.showMainMenu()
-		get_tree().paused = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -82,16 +78,7 @@ func gameStart(force:bool = false) -> bool:
 	if dev_ignoreReset:
 		push_warning("dev_ignoreReset: active")
 	else:
-		%enemySpawnTimer.wait_time = 4.
 		AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, false)
-		music.playing = true
-		# free all enemies in EnemyContainer
-		for e in enemyContainer.get_children():	
-			if e is EnemyBase:	# savety check
-				# disable collisions / make invisible (just in case the queue_free takes a bit)
-				e.collision_layer = 0
-				e.visible = false
-				e.queue_free()
 		player.reset()
 		rot.reset()
 	
@@ -100,27 +87,21 @@ func gameStart(force:bool = false) -> bool:
 	updateScore(0)
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
-	# enemy spawns
-	spawnTimer.start()
-	for n in 4:
-		spawn_enemy()
-	
 	get_tree().paused = false
-	running = true
-	return true
+	running = currentLevel.start(not dev_ignoreReset)
+	return running
 
 ## called when the game ends (abort: just stop the game, without endscreen)
 func gameEnd(abort:=false) -> void:
+	currentLevel.end(abort)
 	running = false
 	# stop music
 	AudioServer.set_bus_effect_enabled(musicAudioBus, musicReverbIdx, true)
-	music.playing = false
 	# reset pause animations (in case we come from a pause)
 	pauseAnim(false)
 	if not abort:
 		# show gameOverScreen
 		gameOverScreen.death(score)
-	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	startable = true
 
@@ -149,25 +130,17 @@ func pauseAnim(start:bool = true) -> void:
 			AudioServer.set_bus_effect_enabled(musicAudioBus, musicLPIdx, false)
 		)
 
+func loadLevel() -> bool:
+	# TODO
+	# - instanciate
+	# - set currentLevel
+	# - connect Score
+	return false
+
 ## @deprecated: game restart (use [method gameEnd]/[method gameStart] instead)
 func reset_scene():
 	push_warning("reset_scene(): is deprecated, use gameEnd()/gameStart()")
 	get_tree().reload_current_scene()
-
-## spawn an enemy somewhere on the SpawnLine
-func spawn_enemy(type="res://Enemies/enemy_melee.tscn") -> void:
-	if dev_disableEnemySpawn:
-		# enemy spawn kill switch
-		push_warning("dev_disableEnemySpawn: active")
-		return
-	var randValue := randf()
-	#print("enemy spawn: ", type, ", ", randValue)
-	var enemy = load(type).instantiate()
-	%PathFollow2D.progress_ratio = randValue
-	enemy.global_position = %PathFollow2D.global_position
-	enemy.death.connect(_on_enemy_death)
-	if 'animate' in enemy: enemy.animate = animate
-	enemyContainer.add_child(enemy)
 
 ## update the score visuals
 func updateScore(newScore:int=score) -> void:
@@ -190,6 +163,10 @@ func dev_cheats() -> void:
 #endregion DEV
 
 #region SIGNALS (gameplay related)
+## called on score updates by the level
+func _on_level_score(update: int) -> void:
+	updateScore(score + update)
+
 ## called on enemy death
 func _on_enemy_death(entity, _position) -> void:
 	if 'score' in entity:
@@ -200,23 +177,6 @@ func _on_enemy_death(entity, _position) -> void:
 		push_warning("_on_enemy_death: entity has no 'score' or 'max_health'")
 		score += 1
 	scoreUI.text = str(score)
-
-## called by enemySpawnTimer
-func _on_enemy_spawn_timer_timeout() -> void:
-	spawn_enemy()
-
-## called by spawnTimeTimer
-func _on_spawn_time_timer_timeout() -> void:
-	# make the spawning of enemies faster
-	var multi = 1.
-	if spawnTimer.get_wait_time() > 1.0:
-		multi = 0.8
-	if spawnTimer.get_wait_time() > 0.6:
-		multi = 0.9
-	else:
-		multi = 0.96
-	spawnTimer.set_wait_time(spawnTimer.get_wait_time() * multi)
-	#print(spawnTimer.get_wait_time())
 
 func _on_player_player_death() -> void:
 	anim_death()
@@ -240,11 +200,10 @@ func _on_settings_menu_pause_option(option: int) -> void:
 func updateAnimate() -> void:
 	player.animate = animate
 	rot.animate = animate
+	currentLevel.animate = animate
 	player.animateUpdate()
 	rot.animateUpdate()
-	for e in enemyContainer.get_children():
-		if "animate" in e:
-			e.animate = animate
+	currentLevel.animateUpdate()
 
 func anim_death() -> void:
 	if animTween:

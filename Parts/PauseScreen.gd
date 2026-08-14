@@ -26,7 +26,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_visibility_changed() -> void:
 	if self.visible:
-		continueButton.grab_focus()
+		if continueButton:
+			continueButton.grab_focus()
+		else:
+			push_warning("'continueButton' cant be focused")
 
 ## pause/resume the game
 func pause(start:=true) -> void:
