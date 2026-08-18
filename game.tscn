@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://mebgd2vbtgl0" path="res://Parts/SettingsMenu.tscn" id="11_iotsf"]
 
 [node name="Game" type="Node2D" unique_id=1066861215]
+texture_filter = 1
 script = ExtResource("1_feb5d")
 
 [node name="Level" parent="." unique_id=1488029732 instance=ExtResource("2_lc2xo")]

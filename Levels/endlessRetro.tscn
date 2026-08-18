@@ -18,6 +18,7 @@ _data = {
 point_count = 5
 
 [node name="endlessRetro" type="Node2D" unique_id=1488029732 node_paths=PackedStringArray("music")]
+texture_filter = 1
 script = ExtResource("1_vh75k")
 music = NodePath("Music")
 

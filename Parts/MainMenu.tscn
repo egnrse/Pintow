@@ -156,6 +156,7 @@ animations = [{
 }]
 
 [node name="MainMenu" type="Control" unique_id=1346217320]
+texture_filter = 1
 propagate_maximum_size = true
 layout_mode = 3
 anchors_preset = 15
