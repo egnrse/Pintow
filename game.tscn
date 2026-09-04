@@ -12,14 +12,17 @@
 [ext_resource type="StyleBox" uid="uid://behyme3dyyb50" path="res://Assets/ButtonFlat_style.tres" id="8_lc2xo"]
 [ext_resource type="PackedScene" uid="uid://dg13byed0ilsd" path="res://Parts/MainMenu.tscn" id="8_vef74"]
 [ext_resource type="PackedScene" uid="uid://cr307u4s54nqu" path="res://Parts/GameOverScreen.tscn" id="9_mfdv2"]
+[ext_resource type="PackedScene" uid="uid://clwmfuf6x1i8u" path="res://Parts/LevelsMenu.tscn" id="11_215e1"]
 [ext_resource type="PackedScene" uid="uid://mebgd2vbtgl0" path="res://Parts/SettingsMenu.tscn" id="11_iotsf"]
 
 [node name="Game" type="Node2D" unique_id=1066861215]
 texture_filter = 1
 script = ExtResource("1_feb5d")
 
-[node name="Level" parent="." unique_id=1488029732 instance=ExtResource("2_lc2xo")]
+[node name="LevelContainer" type="Node2D" parent="." unique_id=220979407]
 unique_name_in_owner = true
+
+[node name="endlessRetro" parent="LevelContainer" unique_id=1488029732 instance=ExtResource("2_lc2xo")]
 
 [node name="Rotateing" parent="." unique_id=993906565 node_paths=PackedStringArray("anker") instance=ExtResource("2_e2o6t")]
 position = Vector2(-68, 7)
@@ -123,12 +126,8 @@ Game = NodePath("../..")
 unique_name_in_owner = true
 visible = false
 
-[node name="Levels_TODO" type="Control" parent="UI" unique_id=257956815]
+[node name="LevelsMenu" parent="UI" unique_id=524765256 instance=ExtResource("11_215e1")]
 visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="MainMenu" parent="UI" unique_id=1346217320 instance=ExtResource("8_vef74")]
 visible = false
@@ -145,7 +144,6 @@ stream = ExtResource("6_j5wjh")
 volume_db = -20.0
 bus = &"Music"
 
-[connection signal="score" from="Level" to="." method="_on_level_score"]
 [connection signal="playerDeath" from="Player" to="." method="_on_player_player_death"]
 [connection signal="pause" from="UI/GameUI/PauseButtonContainer" to="." method="_on_pause_button_container_pause"]
 [connection signal="pressed" from="UI/GameUI/PauseButtonContainer/PauseButton1" to="UI/GameUI/PauseButtonContainer" method="_on_pause_button_1_pressed"]
@@ -155,6 +153,9 @@ bus = &"Music"
 [connection signal="menu_button" from="UI/GameOverScreen" to="UI" method="showMainMenu"]
 [connection signal="restart_button" from="UI/GameOverScreen" to="UI" method="startGame"]
 [connection signal="settings_button" from="UI/GameOverScreen" to="UI" method="showSettings"]
+[connection signal="menu_button" from="UI/LevelsMenu" to="UI" method="showMainMenu"]
+[connection signal="play_level" from="UI/LevelsMenu" to="." method="_on_levels_menu_play_level"]
+[connection signal="play_level" from="UI/LevelsMenu" to="UI" method="_on_levels_menu_play_level"]
 [connection signal="levels_button" from="UI/MainMenu" to="UI" method="showLevels"]
 [connection signal="play_button" from="UI/MainMenu" to="UI" method="startGame"]
 [connection signal="settings_button" from="UI/MainMenu" to="UI" method="showSettings"]

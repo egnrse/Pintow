@@ -6,12 +6,12 @@ extends CanvasLayer
 @onready var Game = get_parent()
 
 # menu nodes (managed by UI)
-@onready var mainMenu = $MainMenu
-@onready var settingsMenu = $SettingsMenu
-@onready var levelsMenu = $Levels_TODO
+@onready var mainMenu := $MainMenu
+@onready var settingsMenu := $SettingsMenu
+@onready var levelsMenu := $LevelsMenu
 # screen nodes (managed by Game)
-@onready var pauseScreen = $PauseScreen
-@onready var gameOverScreen = $GameOverScreen
+@onready var pauseScreen := $PauseScreen
+@onready var gameOverScreen := $GameOverScreen
 
 var settingsCaller: Node	## who called settings previously (to restore focus/visibility)
 
@@ -28,8 +28,6 @@ func showMainMenu(caller:Node = null) -> void:
 	mainMenu.visible = true
 	hideCaller(caller)
 func showLevels(caller:Node = null) -> void:
-	push_error("levels menu not implemented")
-	return
 	levelsMenu.visible = true
 	hideCaller(caller)
 func showSettings(caller:Node = null) -> void:
@@ -56,3 +54,8 @@ func hideCaller(caller:Node = null) -> bool:
 	else:
 		return false
 #endregion manageUI
+
+
+func _on_levels_menu_play_level(_levelString: String) -> void:
+	# the actual game starts in Game
+	levelsMenu.visible = false

@@ -282,7 +282,6 @@ text = "Play
 layout_mode = 2
 theme = ExtResource("34_8eens")
 theme_override_font_sizes/font_size = 40
-disabled = true
 text = "Levels"
 
 [node name="ButtonSettings" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=2081033089]

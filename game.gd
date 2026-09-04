@@ -15,7 +15,8 @@ var score := 0			## increase score on enemy death
 @onready var UI := %UI		## manages all menu UI
 @onready var pauseScreen := %PauseScreen
 @onready var gameOverScreen := %GameOverScreen
-@onready var currentLevel := %Level
+@onready var levelContainer := %LevelContainer
+var currentLevel : Node
 
 # audio
 var musicReverbIdx := 0	## effect index in the music bus
@@ -43,6 +44,12 @@ var pauseTween: Tween			## tween obj for game pauses
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if levelContainer.get_child_count() > 0:
+		# auto load the last level in levelContainer
+		var lvl := levelContainer.get_children()[-1]
+		connectLevel(lvl)
+		currentLevel = lvl
+	
 	if dev_beefyPlayer:
 		push_warning("dev_beefyPlayer: active")
 		player.max_health = INF
@@ -71,6 +78,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func gameStart(force:bool = false) -> bool:
 	if not startable or running:
 		push_warning("gameStart(): Game is not startable or is already running")
+		if not force: return false
+	if not currentLevel:
+		push_warning("no level loaded ('currentLevel' invalid)")
 		if not force: return false
 	startable = false
 	
@@ -130,12 +140,20 @@ func pauseAnim(start:bool = true) -> void:
 			AudioServer.set_bus_effect_enabled(musicAudioBus, musicLPIdx, false)
 		)
 
-func loadLevel() -> bool:
-	# TODO
-	# - instanciate
-	# - set currentLevel
-	# - connect Score
-	return false
+## load a level (queue_free the current one)
+func loadLevel(levelString:String) -> bool:
+	var newLevel = load(levelString).instantiate()
+	levelContainer.add_child(newLevel)
+	connectLevel(newLevel)
+	currentLevel = newLevel
+	for child in levelContainer.get_children():
+		if not child == newLevel:
+			child.queue_free()
+	return true
+## connect signals for a new level
+func connectLevel(level: Node) -> void:
+	level.score.connect(_on_level_score)
+
 
 ## @deprecated: game restart (use [method gameEnd]/[method gameStart] instead)
 func reset_scene():
@@ -185,6 +203,14 @@ func _on_player_player_death() -> void:
 ## pause button got pressed
 func _on_pause_button_container_pause() -> void:
 	pauseGame()
+
+## a level got selected in the levels menu
+func _on_levels_menu_play_level(levelString: String) -> void:
+	# the UI is managed in UI
+	if loadLevel(levelString):
+		gameStart()
+	else:
+		push_error("failed to load level")
 #endregion SIGNALS
 
 #region SETTINGS (setting signals/functions)
@@ -200,10 +226,11 @@ func _on_settings_menu_pause_option(option: int) -> void:
 func updateAnimate() -> void:
 	player.animate = animate
 	rot.animate = animate
-	currentLevel.animate = animate
 	player.animateUpdate()
 	rot.animateUpdate()
-	currentLevel.animateUpdate()
+	if currentLevel:
+		currentLevel.animate = animate
+		currentLevel.animateUpdate()
 
 func anim_death() -> void:
 	if animTween:

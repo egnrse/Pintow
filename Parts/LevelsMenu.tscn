@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://clwmfuf6x1i8u"]
+
+[ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="1_bvtsg"]
+[ext_resource type="Script" uid="uid://bari02ytf4isp" path="res://Parts/LevelsMenu.gd" id="1_ljgop"]
+[ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="2_ljgop"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="3_dosnp"]
+
+[node name="LevelsMenu" type="Control" unique_id=524765256]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ljgop")
+
+[node name="Background" type="Node2D" parent="." unique_id=1892486871]
+position = Vector2(653, 380)
+scale = Vector2(0.8, 0.8)
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=1380315052]
+custom_minimum_size = Vector2(1720, 1000)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -860.0
+offset_top = -500.0
+offset_right = 860.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.36112815, 0.36112815, 0.36112815, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=137257079]
+self_modulate = Color(0.38039216, 0.53333336, 1, 0.13725491)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("1_bvtsg")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background" unique_id=818040755]
+modulate = Color(0.6156863, 0.78431374, 0.84705883, 1)
+self_modulate = Color(0.51652586, 0.51652557, 0.5165253, 0.78039217)
+texture = ExtResource("2_ljgop")
+
+[node name="LabelLevels" type="Label" parent="." unique_id=2136181983]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("3_dosnp")
+theme_type_variation = &"HeaderLarge"
+text = "Levels"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ButtonBack" type="Button" parent="." unique_id=1655863798]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 47.0
+offset_right = 296.0
+offset_bottom = 138.0
+theme = ExtResource("3_dosnp")
+text = "Back"
+
+[node name="BoxContainer" type="BoxContainer" parent="." unique_id=1285025209]
+layout_mode = 0
+offset_left = 266.0
+offset_top = 213.0
+offset_right = 1017.0
+offset_bottom = 702.0
+vertical = true
+
+[node name="endlessRetro" type="Button" parent="BoxContainer" unique_id=534093340]
+layout_mode = 2
+theme = ExtResource("3_dosnp")
+text = "endlessRetro"
+
+[node name="testEnemies" type="Button" parent="BoxContainer" unique_id=695978719]
+layout_mode = 2
+theme = ExtResource("3_dosnp")
+text = "testEnemies"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="BoxContainer/endlessRetro" to="." method="_on_endless_retro_pressed"]
+[connection signal="pressed" from="BoxContainer/testEnemies" to="." method="_on_test_enemies_pressed"]
