@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cq7qqhhdhxkvc"]
+
+[ext_resource type="Script" uid="uid://3iibi887mky3" path="res://Parts/wave_spawning.gd" id="1_3duum"]
+
+[node name="WaveSpawning" type="Node2D" unique_id=1366784846]
+script = ExtResource("1_3duum")
+
+[node name="waveTimer" type="Timer" parent="." unique_id=1791341961]
+one_shot = true
+
+[connection signal="timeout" from="waveTimer" to="." method="spawnWaveTimer_timeout"]
