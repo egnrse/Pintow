@@ -1,19 +1,8 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://ctc2jw8cignab"]
 
-[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_j3pel"]
-resource_name = "Amplify"
-volume_db = 18.0
-
-[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_j3pel"]
-resource_name = "Limiter"
-ceiling_db = -1.5
-
-[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
-resource_name = "Reverb"
-room_size = 0.62
-damping = 1.0
-hipass = 0.4
-wet = 0.04
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_u4rcf"]
+resource_name = "HardLimiter"
+pre_gain_db = 4.0
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_g28q7"]
 resource_name = "Reverb"
@@ -39,36 +28,47 @@ cutoff_hz = 927.0
 resonance = 0.76
 db = 1
 
+[sub_resource type="AudioEffectAmplify" id="AudioEffectAmplify_u4rcf"]
+resource_name = "Amplify"
+volume_db = 5.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
+resource_name = "Reverb"
+room_size = 0.62
+damping = 1.0
+hipass = 0.4
+wet = 0.04
+
 [resource]
-bus/0/effect/0/effect = SubResource("AudioEffectAmplify_j3pel")
+bus/0/effect/0/effect = SubResource("AudioEffectHardLimiter_u4rcf")
 bus/0/effect/0/enabled = true
-bus/0/effect/1/effect = SubResource("AudioEffectLimiter_j3pel")
-bus/0/effect/1/enabled = true
-bus/1/name = &"SFX"
+bus/1/name = &"Music"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectReverb_j3pel")
-bus/1/effect/0/enabled = true
-bus/2/name = &"SFX_enemy"
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_g28q7")
+bus/1/effect/0/enabled = false
+bus/1/effect/1/effect = SubResource("AudioEffectLowPassFilter_j3pel")
+bus/1/effect/1/enabled = false
+bus/1/effect/2/effect = SubResource("AudioEffectHighPassFilter_j3pel")
+bus/1/effect/2/enabled = false
+bus/1/effect/3/effect = SubResource("AudioEffectBandPassFilter_j3pel")
+bus/1/effect/3/enabled = false
+bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
-bus/2/send = &"SFX"
-bus/3/name = &"Music"
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectAmplify_u4rcf")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectReverb_j3pel")
+bus/2/effect/1/enabled = true
+bus/3/name = &"SFX_enemy"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
-bus/3/volume_db = 0.0
-bus/3/send = &"Master"
-bus/3/effect/0/effect = SubResource("AudioEffectReverb_g28q7")
-bus/3/effect/0/enabled = false
-bus/3/effect/1/effect = SubResource("AudioEffectLowPassFilter_j3pel")
-bus/3/effect/1/enabled = false
-bus/3/effect/2/effect = SubResource("AudioEffectHighPassFilter_j3pel")
-bus/3/effect/2/enabled = false
-bus/3/effect/3/effect = SubResource("AudioEffectBandPassFilter_j3pel")
-bus/3/effect/3/enabled = false
+bus/3/volume_db = 0.011711121
+bus/3/send = &"SFX"

@@ -12,7 +12,6 @@ signal death(entity,position:Vector2)	## emited when [member self] dies
 @export var speed := 100			## movement speed of [member self]
 @export var score := max_health		## score player gets on kill of [member self] (default: [member max_health])
 
-
 @export_subgroup("animation", "anim")
 @export var animLook: Node2D = null				## object holding the visuals of [member self] which can be animated
 @export var animSprite: AnimatedSprite2D = null	## object with animations (expects: "default", "hit", "die")
@@ -21,25 +20,25 @@ signal death(entity,position:Vector2)	## emited when [member self] dies
 @export var animNameDie := "die"				## the name of the die/death animation
 @export var animHitTime := 0.2					## how to long to play the hit animation for, before switching back to default
 
+@export_subgroup("audio", "audio")
+@export var audioBus := &"SFX_enemy"		## the bus to where the audio of SFX goes to
+var audioHurt := AudioStreamPlayer2D.new()	## the audio player
+@export var audioHurtStream := preload("res://Assets/SFX/Enemy HurtV3.wav")	## sfx to play when this enemy is hurt (by the player)
+@export var audioHurtVolume := -2.5			## volume in db
+@export var audioHurtPitchRange := 0.3		## range of the pitch diviation (calculated like: randf_range(1-pitchRange, 1+pitchRange))
+var audioDie := AudioStreamPlayer2D.new()	## the audio player
+@export var audioDieStream := preload("res://Assets/SFX/Enemy DeathV2.wav")	## sfx to play on death
+@export var audioDieVolume := 0				## volume in db
+@export var audioDiePitchRange := 0.3		## range of the pitch diviation (calculated like: randf_range(1-pitchRange, 1+pitchRange))
+
 @export_subgroup("more")
 @export var INVUL_TIME := 0.1;		## invulnerability time between damage instances (see [member iTimer])
 @export var animate := true			## if animations should be shown
-@export var audioBus := &"SFX_enemy"## the bus to where the audio of SFX goes to
 
 var health := max_health			## current health
 var alive := true					## if [member self] is currently alive
 var justDamaged := false			## [member self] can only take damage if false (is reset by [member iTimer])
 var iTimer := Timer.new()			## invulnerability timer, gets started after taking damage
-
-# audio
-var audioHurt := AudioStreamPlayer2D.new()	## the audio player
-var audioHurtStream := preload("res://Assets/Enemy_HurtV3.wav")	## the audiostream obj
-var audioHurtVolume := 0			## volume in db
-var audioHurtPitchRange := 0.3		## range of the pith diviation
-var audioDie := AudioStreamPlayer2D.new()	## the audio player
-var audioDieStream := preload("res://Assets/Enemy_HurtV2.wav")	## the audiostream obj
-var audioDieVolume := -5			## volume in db
-var audioDiePitchRange := 0.3		## range of the pith diviation
 
 # animation
 var animTween:Tween				## for animations

@@ -23,6 +23,7 @@ signal did_damage(amount:int)		## emited when [member self] damages sth else
 
 @export_subgroup("more")
 @export var animate := true			## if animations should be shown
+@export_range(0,2,0.01,"or_greater") var baseVolume: = 0.3		## base volume of rotateing (linear)
 
 
 # values for speed streching
@@ -34,11 +35,13 @@ var pre_stretch := 1.0			## stretch multiplier in the previous tick
 var pre_pos := self.global_position	## position of [member self] in the previous tick
 
 @onready var animatedSprite := $AnimatedSpriteContainer/AnimatedSprite2D	## the animation sprite
-
+@onready var audioStream := $AudioStreamPlayer2D
 
 func _ready():
 	if not anker:
 		push_error("Rotating: anker has not been set")
+	if audioStream.volume_db != 0 or audioStream.pitch_scale != 1:
+		push_warning("audioStream volume or pitch have been modified, those values are ignored")
 
 func _physics_process(_delta: float) -> void:
 	# connect self to anker
@@ -100,11 +103,10 @@ func _physics_process(_delta: float) -> void:
 	pre_pos = global_position
 	
 	# audio
-	var audio := $AudioStreamPlayer2D
 	var pitch: float = speed / 25000.0 + 0.6
-	var volume: float = min(speed / 10000.0, 1)**2 * 0.36
-	audio.pitch_scale = pitch
-	audio.volume_linear = volume
+	var currentVolume: float = min(speed / 10000.0, 1)**2 * baseVolume
+	audioStream.pitch_scale = pitch
+	audioStream.volume_linear = currentVolume
 	
 	# particles!
 	var speedPart := $Particles/Speed
