@@ -29,41 +29,51 @@ signal pauseOption(option: Globals.PauseButtonOptions)	## a pause option has bee
 ## - loaded from a file by [method loadSettings] [br]
 ## - saved to a file by [method saveSettings]
 var settingsConfig := ConfigFile.new()
-var settingsCanSave := false						## if settings can be save (protection from overwriting)
+var settingsCanSave := false						## if settings can be saved (protection from overwriting)
+## if settings are getting loaded (from a file) right now, used to drop updates to the [member settingsRegistry]
+var settingsLoading := false
 const SETTINGS_FILE_PATH := "user://settings01.cfg"	## path to the settings file
 const SECTION := "settings"							## the only used section rn
 const OK_CONFIG_LOAD_ERR := [7]						## config load erros that can be ignored (7: file not found)
 ## keys for [member settingsRegistry], slightly ordered (look: 1-?, audio: 100-?)
-enum SETTING_KEY { animate=1, pause_button_option=2, music_volume=100, sfx_volume=101}
+enum SETTING_KEY {
+	animate=1, 				## if animations are enabled
+	pause_button_option=2,	## change pause button's theme and visibility
+	music_volume=100,		## volume of music
+	sfx_volume=101,			## volume of sfx
+}
 
-## storage for 'Setting' objects using [Setting] (a class in this file) (string key, default, get_ui, set_ui, apply)
+## storage for 'Setting' objects using [Setting] (a custom class) (string key, default, get_ui, set_ui, apply)
 @onready var settingsRegistry : Dictionary[SETTING_KEY, Setting] = {
 	SETTING_KEY.animate: Setting.new("animate", Game.animate,
 		func(): return animateCheckBox.button_pressed,
-		func(v): animateCheckBox.button_pressed = v,
+		func(v): animateCheckBox.set_pressed_no_signal(v),
 		func(v): animate.emit(v)
 	),
 	SETTING_KEY.music_volume: Setting.new("music_volume", AudioServer.get_bus_volume_linear(musicAudioBus),
 		func(): return musicSlider.value,
-		func(v): musicSlider.value = v,
+		func(v): musicSlider.set_value_no_signal(v),
 		func(v): AudioServer.set_bus_volume_linear(musicAudioBus, v)
 	),
 	SETTING_KEY.sfx_volume: Setting.new("sfx_volume", AudioServer.get_bus_volume_linear(sfxAudioBus),
 		func(): return sfxSlider.value,
-		func(v): sfxSlider.value = v,
+		func(v): sfxSlider.set_value_no_signal(v),
 		func(v): AudioServer.set_bus_volume_linear(sfxAudioBus, v)
 	),
 	SETTING_KEY.pause_button_option: Setting.new("pause_button_option", Globals.PauseButtonOptions.AUTO,
 		func(): return pauseOptionButton.selected,
 		func(v): pauseOptionButton.select(v),
 		func(v): pauseOption.emit(v as Globals.PauseButtonOptions)
-	)
+	),
 }
+
 
 ## prepare and load settings
 func _ready() -> void:
+	# checks
 	if not Game:
 		push_error("Game is not defined")
+	assert(validate_settings_registry(), "'settingsRegistry' is out of sync with 'SETTING_KEY'")
 	
 	# prepare
 	pauseOptionButton.clear()
@@ -93,11 +103,14 @@ func previousMenu():
 func _on_button_back_pressed() -> void:
 	previousMenu()
 
+
 #region store/load settings
-## load settingsConfig from a file
-## (sets [member settingsCanSave] to true if everything was fine)
+## load [member settingsConfig] from a file [br]
+## - sets [member settingsCanSave] to true if everything was fine [br]
+## - sets [member settingsLoading] to true during the actual loading (to help intercept updates to the settings during this period)
 func loadSettings() -> bool:
 	var err := settingsConfig.load(SETTINGS_FILE_PATH)
+	settingsLoading = true
 	for key in settingsRegistry:
 		var s = settingsRegistry[key]
 		var val = s.default
@@ -106,6 +119,7 @@ func loadSettings() -> bool:
 		
 		s.set_ui.call(val)
 		s.apply.call(val)
+	settingsLoading = false
 	
 	if err != OK and err not in OK_CONFIG_LOAD_ERR:
 		push_error("failed to load settings from '%s' (err: %d)" % [SETTINGS_FILE_PATH, err])
@@ -122,7 +136,8 @@ func findValue(string_key:String) -> Setting:
 			return s
 	return null
 
-## saves a minimized version of settingsConfig to a file (only if [member settingsCanSave] is true)
+## saves a minimized version of settingsConfig to a file (only if [member settingsCanSave] is true) [br]
+## - the [member settingsCanSave] check can be overwritten with 'force'
 func saveSettings(force := false) -> bool:
 	# mimimize the stored config (only store non default values)
 	var minConfig := ConfigFile.new()
@@ -143,8 +158,12 @@ func saveSettings(force := false) -> bool:
 		return false
 	return true
 
-## update a setting given a key for [member settingsRegistry] (optionally give a value)
+## update a setting given a key for [member settingsRegistry] (optionally give a value) [br]
+## - drops updates if [member settingsLoading] is true
 func updateSetting(key: SETTING_KEY, value: Variant = null) -> bool:
+	if settingsLoading:
+		push_warning("'settingsLoading' is true, will not update '%s'" % [SETTING_KEY.find_key(key)])
+		return false
 	var s: Setting = settingsRegistry.get(key)
 	if not s:	# s = null
 		push_error("key '%s' not found in 'settingsRegistry'" % [key as SETTING_KEY])
@@ -159,6 +178,31 @@ func updateSetting(key: SETTING_KEY, value: Variant = null) -> bool:
 	settingsConfig.set_value(SECTION, s.string_key, value)
 	return saveSettings()
 #endregion save/load settings
+
+
+#region tests
+## some sanity checks for [member settingsRegistry] and [member SETTING_KEY]
+func validate_settings_registry() -> bool:
+	# every enum value has a registry entry
+	for enum_name in SETTING_KEY.keys():
+		var k: SETTING_KEY = SETTING_KEY[enum_name]
+		if not settingsRegistry.has(k):
+			push_warning("'SETTING_KEY.%s' has no entry in 'settingsRegistry'" % enum_name)
+			# dont abort, just warn
+	
+	# every registry entry is a real enum value, and its string key matches
+	for k in settingsRegistry:
+		var enum_name = SETTING_KEY.find_key(k)
+		if enum_name == null:
+			push_error("'settingsRegistry' has key '%s' which is not in 'SETTING_KEY'" % k)
+			return false
+		var setting: Setting = settingsRegistry[k]
+		if setting.string_key != enum_name:
+			push_error("'SETTING_KEY.%s' maps to a Setting with string_key '%s'" % [enum_name, setting.string_key])
+			return false
+	
+	return true
+#endregion tests
 
 
 #region handle setting changes
