@@ -12,6 +12,7 @@ signal pauseOption(option: Globals.PauseButtonOptions)	## a pause option has bee
 
 
 @onready var Game := get_node_or_null("/root/Game")	## the game root note
+@onready var resetDialog := %ResetDialog
 
 # settings ordered like they are in the UI
 @onready var animateCheckBox := %AnimateCheckBox
@@ -207,10 +208,7 @@ func validate_settings_registry() -> bool:
 
 #region handle setting changes
 func _on_reset_settings_button_pressed() -> void:
-	push_warning("!! reseting config file !!")
-	settingsConfig = ConfigFile.new()
-	saveSettings(true)
-	loadSettings()
+	resetDialog.show()
 
 func _on_animate_check_box_toggled(toggled_on: bool) -> void:
 	updateSetting(SETTING_KEY.animate, toggled_on)
@@ -225,5 +223,12 @@ func _on_sfx_h_slider_drag_ended(value_changed: bool) -> void:
 func _on_pause_option_button_item_selected(index: int) -> void:
 	updateSetting(SETTING_KEY.pause_button_option, index)
 
-
 #endregion handle setting changes
+
+
+## reset the config and write it to the config file
+func _on_reset_dialog_confirmed() -> void:
+	push_warning("resetting config file!")
+	settingsConfig = ConfigFile.new()
+	saveSettings(true)
+	loadSettings()

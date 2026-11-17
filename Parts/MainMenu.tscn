@@ -300,13 +300,14 @@ text = "Close"
 [node name="CloseDialog" type="ConfirmationDialog" parent="." unique_id=1197782274]
 unique_name_in_owner = true
 oversampling_override = 1.0
-title = "Closing Game!"
+title = "Are you sure?"
 initial_position = 2
-size = Vector2i(285, 107)
+size = Vector2i(285, 104)
 always_on_top = true
 popup_window = true
 popup_wm_hint = true
-dialog_text = "You sure?"
+content_scale_factor = 1.3
+ok_button_text = "Close Game"
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonPlay" to="." method="_on_button_play_pressed"]
