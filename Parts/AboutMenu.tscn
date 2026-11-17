@@ -1,0 +1,155 @@
+[gd_scene format=3 uid="uid://cef6vo0yimj0f"]
+
+[ext_resource type="Script" uid="uid://dblwoxu6s2rwu" path="res://Parts/AboutMenu.gd" id="1_7ay61"]
+[ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="2_3xwhp"]
+[ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="3_3x7lc"]
+[ext_resource type="Theme" uid="uid://dhwn2srwqlkqs" path="res://Assets/MainTheme.tres" id="4_tagcl"]
+
+[node name="AboutMenu" type="Control" unique_id=1178187265]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ay61")
+
+[node name="Background" type="Node2D" parent="." unique_id=891696227]
+position = Vector2(653, 380)
+scale = Vector2(0.8, 0.8)
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=1416816524]
+custom_minimum_size = Vector2(1720, 1000)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -860.0
+offset_top = -500.0
+offset_right = 860.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.36112815, 0.36112815, 0.36112815, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=2144493027]
+self_modulate = Color(0.38039216, 0.53333336, 1, 0.13725491)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("2_3xwhp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background" unique_id=516542789]
+modulate = Color(0.6156863, 0.78431374, 0.84705883, 1)
+self_modulate = Color(0.51652586, 0.51652557, 0.5165253, 0.78039217)
+texture = ExtResource("3_3x7lc")
+
+[node name="LabelSettings" type="Label" parent="." unique_id=34499121]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme = ExtResource("4_tagcl")
+theme_type_variation = &"HeaderLarge"
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="ButtonBack" type="Button" parent="." unique_id=1062303030]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 47.0
+offset_right = 296.0
+offset_bottom = 138.0
+theme = ExtResource("4_tagcl")
+text = "Back"
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=193500200]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.54800004
+anchor_top = 0.50200003
+anchor_right = 0.54800004
+anchor_bottom = 0.50200003
+offset_left = -375.44006
+offset_top = -349.44003
+offset_right = 376.55994
+offset_bottom = 349.55997
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_tagcl")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1312373905]
+layout_mode = 2
+offset_transform_enabled = true
+theme = ExtResource("4_tagcl")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer" unique_id=1555351749]
+layout_mode = 2
+theme = ExtResource("4_tagcl")
+follow_focus = true
+draw_focus_border = true
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer" unique_id=1938739886]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="LabelHeader" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1876428613]
+layout_mode = 2
+theme = ExtResource("4_tagcl")
+theme_type_variation = &"HeaderLarge"
+text = "About"
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1366608112]
+layout_mode = 2
+theme = ExtResource("4_tagcl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=814194216]
+layout_mode = 2
+
+[node name="LinkButton" type="LinkButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer" unique_id=378766329]
+layout_mode = 2
+text = "https://github.com/egnrse/Pintow"
+uri = "https://github.com/egnrse/Pintow"
+
+[node name="LabelLicense" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer" unique_id=1739194421]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "License: MIT"
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1268153694]
+layout_mode = 2
+theme = ExtResource("4_tagcl")
+
+[node name="Label2" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=964230595]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "Most things are made by me, egnrse. This includes most SFX, music, code and more."
+autowrap_mode = 3
+
+[node name="LINE2" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=665978466]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=2084732678]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "For a more detailed attribution look at 'ATTRIBUTION.md' in the link above."
+autowrap_mode = 3
+
+[node name="LINE" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=1271575334]
+layout_mode = 2
+
+[node name="LabelAIuse" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer" unique_id=2145273173]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+text = "I did not use any substantial work that was generated with an LLM. (But I did use AI to help me answer some questions and eg. copied the name of a GDScript function from its output.)"
+autowrap_mode = 3
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
