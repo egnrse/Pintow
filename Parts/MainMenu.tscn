@@ -38,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://0apg8ui2wxku" path="res://Assets/BackgroundV1.jpg" id="35_4ofva"]
 [ext_resource type="Texture2D" uid="uid://bvy6lagohvlet" path="res://Assets/Space Background_Coffee.png" id="36_kbqlr"]
 [ext_resource type="PackedScene" uid="uid://cef6vo0yimj0f" path="res://Parts/AboutMenu.tscn" id="38_egdm5"]
+[ext_resource type="Script" uid="uid://1nnec6f2sgxa" path="res://Parts/Anim_EnemyIdle.gd" id="38_k1e7x"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_k33gt"]
 animations = [{
@@ -235,13 +236,15 @@ theme = ExtResource("34_8eens")
 theme_type_variation = &"HeaderMedium"
 text = "by egnrse"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=346288798]
+[node name="EnemyIdle" type="Node2D" parent="." unique_id=432960428]
+script = ExtResource("38_k1e7x")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="EnemyIdle" unique_id=346288798]
 modulate = Color(1, 0.8980392, 1, 1)
-position = Vector2(257, 532)
+position = Vector2(281, 541)
 scale = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_k33gt")
 autoplay = "default"
-frame_progress = 0.010028612
 
 [node name="Panel" type="Panel" parent="." unique_id=999910074]
 visible = false
@@ -359,6 +362,7 @@ visible = false
 layout_mode = 1
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="frame_changed" from="EnemyIdle/AnimatedSprite2D" to="EnemyIdle" method="_on_frame_changed"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonPlay" to="." method="_on_button_play_pressed"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonLevel" to="." method="_on_button_level_pressed"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/VBoxContainer/ButtonSettings" to="." method="_on_button_settings_pressed"]
