@@ -44,9 +44,12 @@ func _on_close_dialog_confirmed() -> void:
 
 func _on_about_menu_back_button() -> void:
 	aboutMenu.visible = false
+	# refocus MainMain
+	_on_visibility_changed()
 
 
 func _on_about_version_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed or \
+			event.is_action_pressed("ui_accept"):
 		accept_event()
 		aboutMenu.visible = true

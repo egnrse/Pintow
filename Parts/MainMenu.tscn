@@ -300,6 +300,7 @@ text = "Settings"
 [node name="ButtonQuit" type="Button" parent="PanelContainer2/MarginContainer/VBoxContainer" unique_id=1865606233]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_bottom = NodePath(".")
 theme = ExtResource("34_8eens")
 theme_override_font_sizes/font_size = 40
 text = "Close"
@@ -324,6 +325,9 @@ anchor_bottom = 1.0
 offset_top = -48.0
 offset_right = 171.0
 grow_vertical = 0
+focus_mode = 2
+focus_behavior_recursive = 2
+accessibility_name = "About"
 
 [node name="PanelContainer3" type="PanelContainer" parent="AboutVersion" unique_id=905451597]
 layout_mode = 1
