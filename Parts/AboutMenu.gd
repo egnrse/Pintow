@@ -5,6 +5,12 @@ signal back_button()				## show the previous menu
 
 @onready var backButton := $ButtonBack
 
+func _unhandled_input(event: InputEvent) -> void:
+	if self.visible:
+		if event.is_action_pressed("ui_close_dialog"):
+			accept_event()
+			back_button.emit()
+
 func _on_visibility_changed() -> void:
 	if self.visible:
 		if backButton:
