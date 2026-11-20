@@ -7,6 +7,7 @@ signal settings_button(caller:Node)			## show the settings menu
 
 @onready var playButton := %ButtonPlay
 @onready var quitButton := %ButtonQuit
+@onready var aboutButton := %ButtonAbout
 @onready var closeDialog := %CloseDialog
 
 @onready var aboutMenu := %AboutMenu
@@ -15,8 +16,12 @@ signal settings_button(caller:Node)			## show the settings menu
 func _ready() -> void:
 	# disable quit on web
 	if OS.get_name() == "Web":
-		quitButton.visible = true
+		quitButton.visible = false
 		quitButton.disabled = true
+		aboutButton.visible = true
+	else:
+		if aboutButton.visible:
+			push_warning("'aboutButton' is visible on a non web build")
 	
 	# set current version
 	versionLabel.text = "v" + ProjectSettings.get_setting("application/config/version", "_err")
@@ -37,6 +42,8 @@ func _on_button_settings_pressed() -> void:
 	settings_button.emit(self)
 func _on_button_quit_pressed() -> void:
 	closeDialog.show()
+func _on_button_about_pressed() -> void:
+	aboutMenu.visible = true
 
 func _on_close_dialog_confirmed() -> void:
 	get_tree().quit()
